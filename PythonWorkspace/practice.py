@@ -372,3 +372,68 @@ for customer in starbucks:
 
 
 ### while
+customer = "토르"
+index = 5
+while index >= 1:
+    print("{0} 님, 커피가 준비되었습니다. {1}번 남았습니다.".format(customer, index))
+    index -= 1
+    if index == 0:
+        print("커피는 폐기처분되었습니다.")
+
+# customer = "아이언맨"
+# index = 1
+# while True: # 무한루프. 계속 반복됨.
+#     print("{0} 님, 커피가 준비되었습니다. 호출 {1}회".format(customer, index))
+#     index += 1
+#     # 콘솔창 클릭하고 ctrl + c 로 강제종료
+
+    # 맞는 손님이 입력될 때까지 계속해서 안내문을 출력하는 로직
+# customer = "토르"
+# person ="Unknown"
+# while person != customer:
+#     print("{0} 님, 커피가 준비되었습니다.".format(customer))
+#     person = input("이름이 어떻게 되세요? ") # 토르라고 입력하면 while문에서 나오게 됨
+
+
+### continue와 break
+absent = [2, 5] # 결석한 번호
+no_book = [7] # 7번 학생이 책을 안 갖고 옴
+for student in range(1, 11): # 1부터 10번까지
+    if student in absent:
+        continue # for문으로 올라가서 이어가게됨(continue)
+    elif student in no_book:
+        print("오늘 수업 여기까지. {0}는 교무실로 와".format(student))
+        break
+    print("{0}야, 책을 읽어봐".format(student)) # 1~10 에서 2와 5을 제외하고 출력되다가, 7에서 break로 중단돼서 이후 출력되지 않음
+
+
+### 한 줄 for
+    # 출석번호 1 2 3 4 5가 있는데, 앞에 100을 붙이기로 함.
+students =[1,2,3,4,5]
+students = [i+100 for i in students]
+print(students) # [101, 102, 103, 104, 105]
+
+    # 학생 이름을 길이로 변환
+students = ["Iron man", "Thor", "Groot"]
+students = [len(i) for i in students]
+print(students) # [8, 4, 5]
+
+    # 학생 이름을 대문자로 변환
+students = ["Iron man", "Thor", "Groot"]
+students = [i.upper() for i in students]
+print(students) # ['IRON MAN', 'THOR', 'GROOT']
+
+
+##### Quiz) 당신은 Cocoa 서비스를 이용하는 택시 기사입니다.
+# 50명의 승객과 매칭기회가 있을 때, 총 탑승 승객 수를 구하는 프로그램을 작성하시오.
+# 조건1 : 승객별 운행 소요 시간은 5분 ~ 50분 사이의 난수로 정해집니다.
+# 조건2 : 당신은 소요 시간 5분 ~ 15분 사이의 승객만 매칭해야 합니다.
+# 
+# (출력문 예제)
+# [O] 1번째 손님 (소요시간 : 15분)
+# [ ] 2번째 손님 (소요시간 : 50분)
+# [O] 3번째 손님 (소요시간 : 5분)
+# ...
+# [ ] 50번째 손님 (소요시간 : 16분)
+# 
+# 총 탑승 승객 : 2분
