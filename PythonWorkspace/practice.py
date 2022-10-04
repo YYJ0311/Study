@@ -409,7 +409,7 @@ for student in range(1, 11): # 1부터 10번까지
 
 ### 한 줄 for
     # 출석번호 1 2 3 4 5가 있는데, 앞에 100을 붙이기로 함.
-students =[1,2,3,4,5]
+students = [1,2,3,4,5]
 students = [i+100 for i in students]
 print(students) # [101, 102, 103, 104, 105]
 
@@ -437,3 +437,50 @@ print(students) # ['IRON MAN', 'THOR', 'GROOT']
 # [ ] 50번째 손님 (소요시간 : 16분)
 # 
 # 총 탑승 승객 : 2분
+
+
+### 함수
+def open_account():
+    print("새로운 계좌가 생성되었습니다.")
+open_account() # 함수 실행
+
+
+### 전달값과 반환값
+def deposit(balance, money): # balance와 money를 전달받음
+    print("입금이 완료되었습니다. 잔액은 {0}원 입니다.".format(balance + money))
+    return balance + money # 반환
+
+def withdraw(balance, money): #출금
+    if balance >= money: # 잔액이 출금보다 많으면
+        print("출금이 완료되었습니다. 잔액은 {0}원 입니다.".format(balance - money))
+        return balance - money
+    else:
+        print("출금이 완료되지 않았습니다. 잔액은 {0}원 입니다.".format(balance))
+        return balance
+
+def withdraw_night(balance, money): # 저녁에 출금하면 수수료가 생김
+    commission = 100 # 수수료 100원
+    return commission, balance - money - commission # 튜플 형식으로 2개의 값을 ,로 구분하여 보내줌
+
+balance = 0 # 잔액
+balance = deposit(balance, 1000) # balance + money가 balance에 저장됨
+print(balance) # 1000
+
+balance = withdraw(balance, 2000) # 출금이 완료되지 않았습니다. 잔액은 1000원 입니다.
+balance = withdraw(balance, 500) # 출금이 완료되었습니다. 잔액은 500원 입니다.
+
+commission, balance = withdraw_night(balance, 400)
+print("수수료 {0}원 이며, 잔액은 {1}원 입니다.".format(commission, balance))
+
+
+### 기본값
+# def profile(name, age, main_lang):
+#     print("이름 : {0}\t나이 : {1}\t주 사용 언어 : {2}".format(name, age, main_lang))
+# profile("유재석", 20, "파이썬")
+# profile("김태호", 25, "자바")
+
+    # 같은 학교, 반, 수업인 경우 기본값을 사용함
+def profile(name, age=17, main_lang="파이썬"): # 17과 파이썬이 기본값
+    print("이름 : {0}\t나이 : {1}\t주 사용 언어 : {2}".format(name, age, main_lang))
+profile("유재석")
+profile("김태호")
