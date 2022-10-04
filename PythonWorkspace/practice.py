@@ -437,6 +437,29 @@ print(students) # ['IRON MAN', 'THOR', 'GROOT']
 # [ ] 50번째 손님 (소요시간 : 16분)
 # 
 # 총 탑승 승객 : 2분
+from random import *
+count = 0 # 총 탑승 승객 수
+for passenger in range(1, 51): # 50명의 승객에 대해서
+    totalMatchingTime = int(random()*46)+5
+    matchingTime = range(5, 16) # 매칭할 운행소요시간
+    if totalMatchingTime in matchingTime:
+        print("[O]" + str(passenger) + "번째 손님 (소요시간 : " + str(totalMatchingTime) + ")")
+        count += 1
+    else:
+        print("[ ]" + str(passenger) + "번째 손님 (소요시간 : " + str(totalMatchingTime) + ")")
+print("총 탑승 승객 : " + str(count) + " 분")
+
+    # 선생님 풀이
+from random import *
+cnt = 0
+for i in range(1, 51):
+    time = randrange(5,51) # 5 ~ 50 무작위 뽑기
+    if 5 <= time <= 15: # 매칭 성공
+        print("[0] {0}번쨰 손님 (소요시간 : {1}분)".format(i, time))
+        cnt += 1
+    else: # 매칭 실패
+        print("[ ] {0}번쨰 손님 (소요시간 : {1}분)".format(i, time))
+print("총 탑승 승객 : {0} 분".format(cnt))
 
 
 ### 함수
@@ -484,3 +507,14 @@ def profile(name, age=17, main_lang="파이썬"): # 17과 파이썬이 기본값
     print("이름 : {0}\t나이 : {1}\t주 사용 언어 : {2}".format(name, age, main_lang))
 profile("유재석")
 profile("김태호")
+
+
+### 키워드값
+def profile(name, age, main_lang):
+    print(name, age, main_lang)
+
+profile(name="유재석", main_lang="파이썬", age=20)
+profile(main_lang="자바", age=25, name="김태호") # 순서가 바뀌어도 상관없다
+
+
+### 가변인자
