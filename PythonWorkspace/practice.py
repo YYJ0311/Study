@@ -518,3 +518,101 @@ profile(main_lang="자바", age=25, name="김태호") # 순서가 바뀌어도 �
 
 
 ### 가변인자
+# def profile(name, age, lang1, lang2, lang3, lang4, lang5):
+#     print("이름 : {0}\t나이 : {1}\t".format(name,age), end="") # end="" : print문이 끝날 때 줄바꿈을 하지 않고 끝냄
+#     print(lang1, lang2, lang3, lang4, lang5)
+# profile("유재석", 20, "Python", "Java", "C", "C++", "C#")
+# profile("김태호", 25, "Kotlin", "Swift", "", "", "") # 빈 값을 안 넣어주면 에러 발생. 매번 이렇게 빈 값을 넣어줘야 하는가? => 가변인자를 사용하면 됨
+
+def profile(name, age, *language): # *로 시작하는 가변인자를 사용
+    print("이름 : {0}\t나이 : {1}\t".format(name,age), end="") # end="" : print문이 끝날 때 줄바꿈을 하지 않고 끝냄
+    for lang in language:
+        print(lang, end="")
+    print() # 마지막 줄바꿈
+profile("유재석", 20, "Python", "Java", "C", "C++", "C#", "JavaScript")
+profile("김태호", 25, "Kotlin", "Swift")
+
+
+### 지역변수와 전역변수
+gun = 10
+def checkpoint(soldiers): # 경계근무 나가는 군인 수
+    gun = 20
+    gun = gun - soldiers # checkpoint 안에서 gun을 초기화 시켜주지 않아서 오류발생. 바로 위에 gun을 새로 지정해줘야 한다.
+    print("[함수 내] 남은 총 : {0}".format(gun))
+print("전체 총 : {0}".format(gun))
+checkpoint(2) # 2명이 경계 근무 나감
+print("남은 총 : {0}".format(gun)) # 여전히 10개 남았다고 나옴
+
+gun = 10
+def checkpoint(soldiers):
+    global gun # 전역 공간에 있는 gun 사용!
+    gun = gun - soldiers 
+    print("[함수 내] 남은 총 : {0}".format(gun)) # 10
+print("전체 총 : {0}".format(gun)) # 8
+checkpoint(2) # 2명이 경계 근무 나감
+print("남은 총 : {0}".format(gun)) # 8
+
+gun = 10
+def checkpoint_ret(gun, soldiers):
+    gun = gun - soldiers
+    print("[함수 내] 남은 총 : {0}".format(gun))
+    return gun # return을 함으로써 밖에 있는 gun에 영향을 줄 수 있음
+print("전체 총 : {0}".format(gun)) # 8
+gun = checkpoint_ret(gun, 2) # 2명이 경계 근무 나감
+print("남은 총 : {0}".format(gun)) # 8
+
+
+##### Quiz) 표준 체중을 구하는 프로그램을 작성하시오
+# * 표준 체중 : 각 개인의 키에 적당한 체중
+# (성별에 따른 공식)
+# 남자 : 키(m) X 키(m) X 22
+# 여자 : 키(m) X 키(m) X 21
+# 조건1 : 표준 체중은 별도의 함수 내에서 계산
+#     * 함수명 : std_weight
+#     * 전달값 : 키(height), 성별(gender)
+# 조건2 : 표준 체중은 소수점 둘째자리까지 표시
+# (출력 예제)
+# 키 175cm 남자의 표준 체중은 67.38kg 입니다.
+
+    # 선생님 풀이
+def std_weight(height, gender): # 키는 m 단위(실수), 성별은 "남자"/"여자"
+    if gender == "남자":
+        return height * height * 22
+    else:
+        return height * height * 21
+
+height = 175 # cm 단위
+gender = "남자"
+weight = round(std_weight(height / 100, gender), 2) # round(반올림하는 값, 나타내는 소수점 자리 수)
+print("키 {0}cm {1}의 표준 체중은 {2}kg 입니다.".format(height, gender, weight))
+
+
+### 표준 입출력
+print("Python", "Java", "JavaScript", sep=" vs ") # sep를 써서 파이썬과 자바 그리고 자바스크립트 사이에 " vs "를 넣음
+
+print("Python", "Java", sep=",", end="? ") # end : 문장의 끝 부분을 변경
+print("무엇이 더 재밌을까요?") # end를 사용함으로써 두 줄이 한 줄로 출력됨
+
+import sys
+print("Python", "Java", file=sys.stdout) # stdout : 표준출력
+print("Python", "Java", file=sys.stderr) # stderr : 표준에러. 에러를 따로 처리할 때 사용
+
+    # 시험 성적
+scores = {"수학":0, "영어":50, "코딩": 100}
+for subject, score in scores.items(): # items : key와 value로 표현. 여기서 subject가 key, score가 value
+    print(subject.ljust(8), str(score).rjust(4), sep=":") 
+    # 수학, 영어, 코딩이 각각 출력됨. 
+    # ljust(8) : 8개의 공간을 확보하고 왼쪽 정렬. 
+    # rjust(4) : 4칸의 공간을 확보하고 오른쪽 정렬.
+
+    # 은행 대기 순번표 001, 002, 003, ...
+for num in range(1, 21): # 1부터 20까지
+    print("대기번호 : " + str(num).zfill(3)) # zfill(3) : 3개만큼의 공간을 확보하고 값이 없는 곳은 0으로 채움
+
+answer = input("아무 값이나 입력하세요 : ") # 사용자 입력을 통해서 값을 받게 되면 항상 "문자열" 형태로 저장된다.
+# answer = 10 # answer에 숫자를 넣고 타입 확인을 하면 int로 나옴
+print(type(answer)) # 10을 입력하든, "나는" 을 입력하든 str 타입으로 나온다.
+print("입력하신 값은 " + answer + "입니다.")
+
+
+### 다양한 출력 포맷
