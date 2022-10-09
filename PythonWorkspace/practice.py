@@ -733,3 +733,336 @@ import pickle
 
 
 ### 클래스
+# name = "마린"
+# hp = 40
+# damage = 5 # 유닛의 공격력
+# print("{} 유닛이 생성되었습니다.".format(name))
+# print("체력 {0}, 공격력 {1}\n".format(hp, damage))
+
+# tank_name = "탱크"
+# tank_hp = 150
+# tank_damage = 35
+
+# print("{0} 유닛이 생성되었습니다.".format(tank_name))
+# print("체력 {0}, 공격력 {1}\n".format(tank_hp, tank_damage))
+
+#     # 탱크 추가
+# tank2_name = "탱크"
+# tank2_hp = 150
+# tank2_damage = 35
+
+# print("{0} 유닛이 생성되었습니다.".format(tank2_name))
+# print("체력 {0}, 공격력 {1}\n".format(tank2_hp, tank2_damage))
+
+# def attack(name, location, damage):
+#     print("{0} : {1} 방향으로 적군을 공격합니다. [공격력 {2}]".format(\
+#         name, location, damage))
+
+# attack(name, "1시", damage)
+# attack(tank_name, "1시", tank_damage)
+# attack(tank2_name, "1시", tank_damage)
+
+    # 탱크가 많아지면 관리 힘듦. => class 사용
+class Unit:
+    def __init__(self, name, hp, damage):
+        self.name = name
+        self.hp = hp
+        self.damage = damage
+        print("{0} 유닛이 생성되었습니다.".format(self.name))
+        print("체력 {0}, 공격력 {1}".format(self.hp, self.damage))
+
+marine1 = Unit("마린", 40, 5)
+marine2 = Unit("마린", 40, 5)
+tank = Unit("탱크", 150, 35)
+
+
+### __init__
+# marine3 = Unit("마린") # 내용 부족으로 오류
+# marine3 = Unit("마린", 40) # 내용 부족으로 오류
+# init 함수에 정의된 self를 제외한 갯수만큼 보내줘야 객체를 만들 수 있다.
+
+
+### 멤버 변수
+wraith1 = Unit("레이스", 80, 5)
+print("유닛 이름 : {0}, 공격력 : {1}".format(wraith1.name, wraith1.damage)) # .으로 멤버 변수를 외부에서 사용 가능
+
+wraith2 = Unit("빼앗은 레이스", 80, 5)
+wraith2.clocking = True # 외부에서 변수 clocking 추가로 할당
+if wraith2.clocking == True:
+    print("{0} 는 현재 클로킹 상태입니다.".format(wraith2.name))
+# if wraith1.clocking == True: # 1에서는 해당 변수가 존재하지 않아서 오류 발생
+#     print("{0} 는 현재 클로킹 상태입니다.".format(wraith2.name))
+
+
+### 메소드
+print("---메소드---")
+class AttackUnit: # attack, damaged 메소드를 만듦
+    def __init__(self, name, hp, damage):
+        self.name = name
+        self.hp = hp
+        self.damage = damage
+        print("{0} 유닛이 생성되었습니다.".format(self.name))
+        print("체력 {0}, 공격력 {1}".format(self.hp, self.damage))
+
+    def attack(self, location):
+        print("{0} : {1} 방향으로 적군을 공격합니다. [공격력 {2}]"\
+            .format(self.name, location, self.damage))
+    
+    def damaged(self, damage):
+        print("{0} : {1} 데미지를 입었습니다.".format(self.name, damage))
+        self.hp -= damage
+        print("{0} : 현재 체력은 {1} 입니다.".format(self.name, self.hp))
+
+        if self.hp <= 0:
+            print("{0} : 파괴었습니다.".format(self.name))
+    
+firebat1 = AttackUnit("파이어뱃", 50, 16)
+firebat1.attack("5시")
+firebat1.damaged(25) # 파괴를 위해 공격 2번 받는다고 가정
+firebat1.damaged(25) # 파괴되었습니다
+
+
+### 상속
+print("---상속---")
+class NormalUnit:
+    def __init__(self, name, hp, speed):
+        self.name = name
+        self.hp = hp
+        self.speed = speed
+
+    def move(self, location):
+        print("[지상 유닛 이동]")
+        print("{0} : {1} 방향으로 이동합니다. [속도 {2}]"\
+            .format(self.name, location, self.speed))
+
+class AttackUnit(NormalUnit): # NormalUnit 클래스를 상속받음
+    def __init__(self, name, hp, speed, damage):
+        NormalUnit.__init__(self, name, hp, speed)
+        self.damage = damage
+
+    def attack(self, location):
+        print("{0} : {1} 방향으로 적군을 공격합니다. [공격력 {2}]"\
+            .format(self.name, location, self.damage))
+    
+    def damaged(self, damage):
+        print("{0} : {1} 데미지를 입었습니다.".format(self.name, damage))
+        self.hp -= damage
+        print("{0} : 현재 체력은 {1} 입니다.".format(self.name, self.hp))
+
+        if self.hp <= 0:
+            print("{0} : 파괴었습니다.".format(self.name))
+            
+firebat1 = AttackUnit("파이어뱃", 50, 10, 16) # 스피드 10
+firebat1.attack("5시")
+firebat1.damaged(25)
+firebat1.damaged(25) # 상속으로 인해 같은 결과 출력됨
+
+
+### 다중상속
+print("---다중상속---")
+class Flyable: # 날 수 있는 기능
+    def __init__(self, flying_speed):
+        self.flying_speed = flying_speed
+    
+    def fly(self, name, location):
+        print("{0} : {1} 방향으로 날아갑니다. [속도 {2}]"\
+            .format(name, location, self.flying_speed))
+
+class FlyableAttackUnit(AttackUnit, Flyable): # ,로 다중상속. 공중 공격 유닛
+    def __init__(self, name, hp, damage, flying_speed):
+        AttackUnit.__init__(self, name, hp, 0, damage) # flying_speed가 있기 때문에 지상 speed는 0으로 줌
+        Flyable.__init__(self, flying_speed)
+
+valkyrie = FlyableAttackUnit("발키리", 200, 6, 5)
+valkyrie.fly(valkyrie.name, "3시")
+
+
+### 메소드 오버라이딩
+print("---메소드 오버라이딩---")
+# class UnitAddingSpeed:
+#     def __init__(self, name, hp, damage, speed):
+#         self.name = name
+#         self.hp = hp
+#         self.damage = damage
+#         self.speed = speed
+#         print("{0} 유닛이 생성되었습니다.".format(self.name))
+#         print("체력 {0}, 공격력 {1}".format(self.hp, self.damage))
+    
+#     def move(self, location):
+#         print("[지상 유닛 이동]")
+#         print("{0} : {1} 방향으로 이동합니다. [속도 {2}]"\
+#             .foramt(self.name, location, self.speed))
+
+vulture = AttackUnit("벌쳐", 80, 10, 20)
+battlecruiser = FlyableAttackUnit("배틀크루저", 500, 25, 3)
+
+vulture.move("11시")
+battlecruiser.fly(battlecruiser.name, "9시") # 지상유닛과 공중유닛의 이동 메소드가 다름 => 메소드 오버라이딩 이용
+
+class ModifiedFlyableAttackUnit(AttackUnit, Flyable): # FlyableAttackUnit을 다음과 같이 수정
+    def __init__(self, name, hp, damage, flying_speed):
+        AttackUnit.__init__(self, name, hp, 0, damage) # flying_speed가 있기 때문에 지상 speed는 0으로 줌
+        Flyable.__init__(self, flying_speed)
+
+    def move(self, location):
+        print("[공중 유닛 이동]")
+        self.fly(self.name, location)
+
+battlecruiser = ModifiedFlyableAttackUnit("배틀크루저", 500, 25, 3)
+battlecruiser.move("10시")
+
+
+### pass
+class BuildingUnit(Unit):
+    def __init__(self, name, hp, location):
+        pass # 아무것도 안 하고 일단 넘어가게 함. 완성된 것처럼 실행됨.
+supply_depot = BuildingUnit("서플라이 디폿", 500, "7시")
+
+def game_start():
+    print("[알림] 새로운 게임을 시작합니다.")
+def game_over():
+    pass
+game_start() # 문구가 출력됨
+game_over() # 아무것도 나오지 않고 pass 됨
+
+
+### super
+class BuildingUnit(Unit):
+    def __init__(self, name, hp, location):
+        # Unit.__init__(self, name, hp, 0) # speed 0
+        super().__init__(name, hp, 0) # 위와 같음. 대신 self를 빼고 사용.
+        self.location = location
+
+class Unit:
+    def __init__(self):
+        print("Unit 생성자")
+class Flyable:
+    def __init__(self):
+        print("Flyable 생성자")
+class FlyableUnit(Unit, Flyable):
+    def __init__(self):
+        super().__init__()
+dropshop = FlyableUnit() # 2개를 상속받았지만 Unit 생성자만 출력됨. 2개 이상의 부모 클래스를 다중 상속받을 때, super()를 사용하면 같은 함수에 대하여 맨 처음에 상속받는 클래스만 상속된다.
+
+class modifiedFlyableUnit(Unit, Flyable):
+    def __init__(self):
+        # 같은 이름의 함수에 대해 super를 사용하기보단 부모의 클래스를 각각 상속받아서 사용한다.
+        Unit.__init__(self)
+        Flyable.__init__(self)
+dropshop = modifiedFlyableUnit() # Unit과 Flyable 모두 출력됨
+
+
+### 스타크래프트
+# 다른 파이썬 파일의 스크립트는 open으로 불러올 수 없고, import를 사용해야 한다.
+# startcraft = open("starcraft.py", "r", encoding="utf8")
+# print(startcraft)
+# startcraft.close()
+print("---스타크래프트---")
+import starcraft
+
+
+##### Quiz ) 주어진 코드를 활용하여 부동산 프로그램을 작성하시오.
+# (출력 예제)
+# 총 3채의 매물이 있습니다.
+# 강남 아파트 매매 10억 2010년
+# 마포 오피스텔 전세 5억 2007년
+# 송파 빌라 월세 500/50 2000년
+#
+# [코드]
+# class House:
+#     # 매물 초기화
+#     def __init__(self, location, house_type, deal_type, price, completion_year):
+#         pass
+#   
+#     # 매물 정보 표시
+#     def show_detail(self):
+#         pass
+
+class House:
+    # 매물 초기화
+    def __init__(self, location, house_type, deal_type, price, completion_year):
+        self.location = location
+        self.house_type = house_type
+        self.deal_type = deal_type
+        self.price = price
+        self.completion_year = completion_year
+  
+    # 매물 정보 표시
+    def show_detail(self):
+        print("위치 : {0}, 주거타입 : {1}, 매물종류 : {2}, 가격 : {3}, 준공일 : {4}"\
+            .format(self.location, self.house_type, self.deal_type, self.price, self.completion_year))
+
+    # 강남 아파트
+class Gangnam_apt(House):
+    def __init__(self):
+        House.__init__(self, "강남", "아파트", "매매", "10억", "2010년")
+
+    # 마포 오피스텔
+class Mapo_opi(House):
+    def __init__(self):
+        House.__init__(self, "마포", "오피스텔", "전세", "5억", "2007년")
+
+    # 송파 빌라
+class Songpa_bill(House):
+    def __init__(self):
+        House.__init__(self, "송파", "빌라", "월세", "500/50", "2000년")
+
+# 부동산 프로그램
+g = Gangnam_apt()
+m = Mapo_opi()
+s = Songpa_bill()
+
+total_deal = []
+total_deal.append(g)
+total_deal.append(m)
+total_deal.append(s)
+
+print("총 {0}채의 매물이 있습니다.".format(len(total_deal)))
+for deal in total_deal:
+    deal.show_detail()
+
+    # 선생님 풀이
+    # 매물 초기화와 매물 정보표시까지는 동일
+houses = []
+house1 = House("강남", "아파트", "매매", "10억", "2010년")
+house2 = House("마포", "오피스텔", "전세", "5억", "2007년")
+house3 = House("송파", "빌라", "월세", "500/50", "2000년")
+houses.append(house1)
+houses.append(house2)
+houses.append(house3)
+
+print("총 {0}채의 매물이 있습니다.".format(len(houses)))
+for house in houses:
+    house.show_detail()
+
+
+### 예외처리
+# try:
+#     print("나누기 전용 계산기입니다.")
+#     nums = []
+#     nums.append(int(input("첫 번째 숫자를 입력하세요 : "))) # 6
+#     nums.append(int(input("두 번째 숫자를 입력하세요 : "))) # 문자 "삼" 입력하면 에러 발생
+#     # nums.append(int(nums[0]/nums[1]))
+#     print("{0} / {1} = {2}".format(nums[0], nums[1], nums[2]))
+# except ValueError: # 문자 입력으로 생긴 에러 처리
+#     print("에러! 잘못된 값을 입력하였습니다.")
+# except ZeroDivisionError as err: # 0으로 나눴을 때 생긴 에러 처리
+#     print(err)
+# except Exception as err: # 그 외 에러(리스트에 없는 값 때문에 생긴 에러)를 처리 & 에러 내용 표시
+#     print("알 수 없는 에러가 발생하였습니다.")
+#     print(err)
+
+
+### 에러 발생시키기
+# try:
+#     print("한 자리 숫자 나누기 전용 계산기입니다.")
+#     num1 = int(input("첫 번째 숫자를 입력하세요 : "))
+#     num2 = int(input("두 번째 숫자를 입력하세요 : "))
+#     if num1 >= 10 or num2 >= 10:
+#         raise ValueError # 필요한 상황에 특정 에러를 발생시키기. 아래 except 의 에러로 이어진다.
+#     print("{0} / {1} = {2}".format(num1, num2, int(num1 / num2)))
+# except ValueError:
+#     print("잘못된 값을 입력하였습니다. 한 자리 숫자만 입력하세요.")
+
+
+### 사용자 정의 예외처리
