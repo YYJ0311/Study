@@ -45,7 +45,10 @@ print(round(3.14)) # 반올림 3
 from math import *
 import site
 from this import d
-from tkinter import Misc # 파이썬에서 제공하는 math 라이브러리 사용
+from tkinter import Misc
+from typing import final
+
+from travel import vietnam # 파이썬에서 제공하는 math 라이브러리 사용
 print(floor(4.99)) # 내림 4
 print(ceil(3.14)) # 올림 4
 print(sqrt(16)) # 제곱근 4
@@ -1066,3 +1069,252 @@ for house in houses:
 
 
 ### 사용자 정의 예외처리
+# class BigNumberError(Exception): # 두 자리 숫자가 입력되었을 때의 에러를 만듦
+#     # pass
+#     def __init__(self, msg): # 에러에서 보여줄 메세지 정의
+#         self.msg = msg
+
+#     def __str__(self): # 에러에서 보여줄 메세지 정의
+#         return self.msg
+# try:
+#     print("한 자리 숫자 나누기 전용 계산기입니다.")
+#     num1 = int(input("첫 번째 숫자를 입력하세요 : "))
+#     num2 = int(input("두 번째 숫자를 입력하세요 : "))
+#     if num1 >= 10 or num2 >= 10:
+#         raise BigNumberError("입력값 : {0}, {1}".format(num1, num2)) # 필요한 상황에 특정 에러를 발생시키기. 아래 except 의 에러로 이어진다.
+#     print("{0} / {1} = {2}".format(num1, num2, int(num1 / num2)))
+# except ValueError:
+#     print("잘못된 값을 입력하였습니다. 한 자리 숫자만 입력하세요.")
+# except BigNumberError as err:
+#     print("에러가 발생하였습니다. 한 자리 숫자만 입력하세요.")
+#     print(err)
+
+
+### finally
+    # 예외처리 구문에서 정상적이건 오류건 무조건 실행되는 구문
+# class BigNumberError(Exception): # 두 자리 숫자가 입력되었을 때의 에러를 만듦
+#     # pass
+#     def __init__(self, msg): # 에러에서 보여줄 메세지 정의
+#         self.msg = msg
+
+#     def __str__(self): # 에러에서 보여줄 메세지 정의
+#         return self.msg
+# try:
+#     print("한 자리 숫자 나누기 전용 계산기입니다.")
+#     num1 = int(input("첫 번째 숫자를 입력하세요 : "))
+#     num2 = int(input("두 번째 숫자를 입력하세요 : "))
+#     if num1 >= 10 or num2 >= 10:
+#         raise BigNumberError("입력값 : {0}, {1}".format(num1, num2)) # 필요한 상황에 특정 에러를 발생시키기. 아래 except 의 에러로 이어진다.
+#     print("{0} / {1} = {2}".format(num1, num2, int(num1 / num2)))
+# except ValueError:
+#     print("잘못된 값을 입력하였습니다. 한 자리 숫자만 입력하세요.")
+# except BigNumberError as err:
+#     print("에러가 발생하였습니다. 한 자리 숫자만 입력하세요.")
+#     print(err)
+# finally:
+#     print("계산기를 이용해 주셔서 감사합니다.") # 무조건 출력되는 메세지
+
+
+##### Quiz ) 동네의 치킨집에는 항상 대기 손님이 있습니다.
+# 대기 손님의 치킨 요리 시간을 줄이고자 자동 주문 시스템을 제작하였습니다.
+# 시스템 코드를 확인하고 적절한 예외처리 구문을 넣으시오.
+
+# 조건1 : 1보다 작거나 숫자가 아닌 입력값이 들어올 때는 ValueError 로 처리
+#     출력 메세지 : "잘못된 값을 입력하였습니다."
+# 조건2 : 대기 손님이 주문할 수 있는 총 치킨량은 10마리로 한정
+#     치킨 소진 시 사용자 정의 에러(SoldOutError)를 발생시키고 프로그램 종료
+#     출력 메세지 : "재고가 소진되어 더 이상 주문을 받지 않습니다."
+
+# [기본 코드]
+# chicken = 10
+# waiting = 1 # 홀은 현재 만석. 대기번호 1부터 시작.
+# while(True):
+#     print("[남은 치킨 : {0}]".format(chicken))
+#     order = int(input("치킨 몇 마리 주문하시겠습니까?"))
+#     if order > chicken: # 남은 치킨보다 주문량이 많을 때
+#         print("재료가 부족합니다.")
+#     else:
+#         print("[대기번호 {0}] {1} 마리 주문이 완료되었습니다.")\
+#             .format(waiting, order)
+#         waiting += 1
+#         chicken -= order
+
+# chicken = 10
+# waiting = 1 # 홀은 현재 만석. 대기번호 1부터 시작.
+
+# class SoldOutError(Exception):
+#     pass
+
+# while(True):
+#     try:
+#         print("[남은 치킨 : {0}]".format(chicken))
+#         order = int(input("치킨 몇 마리 주문하시겠습니까?"))
+#         if order > chicken: # 남은 치킨보다 주문량이 많을 때
+#             print("재료가 부족합니다.")
+#         elif order <= 0: # 1보다 작은 숫자가 들어올 때 에러처리. 숫자가 아닌 값은 자동으로 ValueError 처리된다.
+#             raise ValueError
+#         else:
+#             print("[대기번호 {0}] {1} 마리 주문이 완료되었습니다."\
+#                 .format(waiting, order))
+#             waiting += 1
+#             chicken -= order
+#         if chicken == 0:
+#             raise SoldOutError
+            
+#     except ValueError:
+#         print("잘못된 값을 입력하였습니다.")
+#     except SoldOutError:
+#         print("재고가 소진되어 더 이상 주문을 받지 않습니다.")
+#         break
+
+
+### 모듈
+    # 필요한 것들끼리 부품처럼 만드는 것 = 모듈화
+    # 함수 정의나 클래스 등의 파이썬 문장을 담고 있는 것 = 모듈
+    # 확장자 : .py
+import theater_module
+theater_module.price(3) # 3명이서 영화 보러 갔을 때 가격
+theater_module.price_morning(4) # 4명 조조영화 가격 # 24000원
+theater_module.price_soldier(5) # 군인 5명 영화 가격 # 20000원
+
+import theater_module as mv # 별명으로 부르는 이름 단축
+mv.price(3)
+mv.price_morning(4)
+mv.price_soldier(5)
+
+from theater_module import *
+price(3)
+price_morning(4)
+price_soldier(5)
+
+from theater_module import price, price_morning # 군인 함수 제외
+price(5)
+price_morning(6)
+price_soldier(7) # 오류 발생. 지금은 위에 여러번 import해서 불러올 수 있음.
+
+from theater_module import price_soldier as price
+price(1) # 다른 함수의 이름과 같은 별명으로 지어서 사용가능
+
+
+### 패키지
+    # 모듈을 모아놓은 집합
+import travel.thailand # 모듈이나 패키지만 import 할 수 있음
+    # travel.thailand.ThailandPackage 가 불가능
+    # from travel.thailand import ThailandPackage 와 같은 방법은 사용가능
+trip_to = travel.thailand.ThailandPackage()
+trip_to.detail() # ThailandPackage 클래스의 detail 함수 호출됨
+
+# from travel import vietnam
+# trip_to = vietnam.VietnamPackage()
+# trip_to.detail()
+
+
+### __all__
+from travel import *
+trip_to = vietnam.VietnamPackage() # 모든 것을 import 하겠다고 했지만, vietnam이 정의되지 않았다고 오류발생
+    # *로 모든 모듈을 불러오겠다고 했지만, 개발자가 문법 상에서 공개 범위를 설정해줘야 함 => travel 폴더의 __init__.py 설정 필요
+    # __init__.py에 __all__ = ["vietnam"] 를 입력함으로써 오류없이 호출 가능!
+trip_to.detail()
+trip_to = thailand.ThailandPackage()
+trip_to.detail()
+
+
+### 모듈 직접 실행
+    # thailand.py에서 if문을 활용해서 모듈 내부에서 실행하는 것인지 외부에서 실행하는 것인지 구분할 수 있다.
+
+
+### 패키지, 모듈 위치
+import inspect
+import random
+print(inspect.getfile(random)) # random 파일의 위치 출력됨
+print(inspect.getfile(thailand))
+    # random 파일의 위치에 우리가 자주 사용하는 폴더를 넣어놓으면 다른 프로젝트에서도 바로 사용할 수 있다!
+
+
+### pip install
+    # 패키지 설치 방법
+    # 구글에 pypi 검색 - pypi.org 페이지 - browse projects 에서 필요한 패키지 찾아 볼 수 있음.
+    # 웹 스크래핑을 위한 beautifulsoup 검색 - beautifulsoup4 4.11.1 - 명령어, 설명, 예제를 볼 수 있음.
+
+    # beautifulsoup 사용
+    # 1. vsc terminal에 실행 명령어 입력(pip install beautifulsoup4)
+    # 2. 예제 코드 복사
+from bs4 import BeautifulSoup
+soup = BeautifulSoup("<p>Some<b>bad<i>HTML")
+print(soup.prettify())
+
+
+### 내장함수
+    # import 필요없이 바로 사용 가능한 함수
+    # input
+# language = input("무슨 언어를 좋아하세요?")
+# print("{0}은 아주 좋은 언어입니다!".format(language))
+
+    #dir : 어떤 객체를 넘겨줬을 때 그 객체가 어떤 변수와 함수를 가지고 있는지 표시
+import random # 외장함수
+print(dir()) # random이 추가됨
+import pickle
+print(dir()) # pickle 추가됨. but 지금은 위에서 부터 계속 이어적어와서 여기서 import 하기 전에도 random이나 pickle이 존재함
+
+print(dir(random)) # random 모듈 내에서 쓸 수 있는 것들을 보여줌
+
+lst = [1, 2, 3]
+print(dir(lst)) # list에서 사용할 수 있는 것들
+
+name = "Jim"
+print(dir(name)) # name에 대해 사용할 수 있는 것들
+
+
+### 외장함수
+    # import해서 사용하는 함수
+
+    # glob : 경로 내의 폴더/파일 목록 조회
+import glob
+print(glob.glob("*.py")) # PythonWorkspace에서 확장자 py인 모든 파일
+
+    # os : 운영체제에서 제공하는 기본 기능
+import os
+print(os.getcwd()) # 현재 디렉토리 표시
+
+# folder = "sample_dir"
+# if os.path.exists(folder): # folder가 있으면
+#     print("이미 존재하는 폴더입니다.")
+#     os.rmdir(folder) # rmdir : 폴더 삭제
+#     print(folder, "폴더를 삭제하였습니다.")
+# else:
+#     os.makedirs(folder) # makedirs : folder 생성
+#     print(folder, "폴더를 생성하였습니다.")
+
+print(os.listdir()) # glob과 비슷
+
+    # time : 시간 관련
+import time
+print(time.localtime())
+print(time.strftime("%Y-%m-%d %H:%M:%S")) # strftime : 시간 포맷 변경
+
+    # datetime
+import datetime
+print("오늘 날짜는 ", datetime.date.today())
+
+today = datetime.date.today() # 오늘 날짜 저장
+td = datetime.timedelta(days=100) # timedelta : 두 날짜 사이의 간격
+print("우리가 만난지 100일은", today + td)
+
+
+##### Quiz ) 프로젝트 내에 나만의 시그니처를 남기는 모듈을 만드시오
+# 조건 : 모듈 파일명은 byme.py
+# (모듈 사용 예제)
+# import byme
+# byme.sign()
+
+# (출력 예제)
+# 이 프로그램은 유영준에 의해 만들어졌습니다.
+# 이메일 : dudwns0311@naver.com
+
+# create_byme = open("byme.py", "w", encoding="utf8")
+# create_byme.write("print('이 프로그램은 유영준에 의해 만들어졌습니다.')\n")
+# create_byme.write("print('이메일 : dudwns0311@naver.com')")
+# create_byme.close()
+
+import byme
+byme.sign()
