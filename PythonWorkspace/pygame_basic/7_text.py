@@ -100,28 +100,32 @@ while running:
     # 충돌 체크
     if character_rect.colliderect(enemy_rect):
         print("충돌했어요")
-        running = False # 게임 종료
+        running = False
 
-    # 화면에 표시
+
     screen.blit(background, (0, 0))
     screen.blit(character, (character_x_pos, character_y_pos))
 
     screen.blit(enemy, (enemy_x_pos, enemy_y_pos))
 
-    # 타이머 넣기, 경과시간 계산
-    elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000 # 경과시간을 1000으로 나누어서 초 단위로 표시
+    # 타이머
+    # 경과 시간 계산
+    elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000 # 밀리세컨드 -> 초 변환
 
-    timer = game_font.render(str(int(total_time - elapsed_time)), True, (255, 255, 255)) # 남은 시간. 밀리세컨드를 자르기 위해 int 타입 사용. 다시 string으로 바꿔서 문자형으로 사용. 출력할 글자/True/글자색상
-    screen.blit(timer, (10, 10))
-        # 만약 시간이 0 이하이면 게임 종료
+    timer = game_font.render(str(int(total_time - elapsed_time)), True, (255, 255, 255)) 
+    # 소수점 제거를 위해 int형으로 변환, render에서 문자를 받아야하기 때문에 str 변환
+
+    screen.blit(timer, (10, 10)) # 좌상단에서 10, 10만큼 떨어져서 그림
+
+    # 시간이 0 이하이면 게임 종료
     if total_time - elapsed_time <= 0:
         print("타임아웃")
         running = False
-        # 잠시 대기
-    pygame.time.delay(2000) # 2초 대기(ms) 후 종료됨
 
     pygame.display.update()
 
+# 잠시 대기
+pygame.time.delay(1000) # 1초 대기
 
 # pygame 종료
 pygame.quit()

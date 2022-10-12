@@ -116,9 +116,8 @@ while running:
         # 만약 시간이 0 이하이면 게임 종료
     if total_time - elapsed_time <= 0:
         print("타임아웃")
+        pygame.time.delay(1000)
         running = False
-
-    pygame.time.delay(2000)
 
     pygame.display.update()
 
