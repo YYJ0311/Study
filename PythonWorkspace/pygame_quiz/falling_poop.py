@@ -1,4 +1,5 @@
 import pygame
+from random import *
 #######################################################
 # 기본 초기화 (반드시 해야 하는 것)
 pygame.init()
@@ -34,20 +35,21 @@ to_y = 0
 
 # 이동 속도
 character_speed = 0.6
+poop_speed = 15
 
 # 똥
 poop = pygame.image.load("C:\\Users\\Joon\\Desktop\\Practice\\Study\\PythonWorkspace\\pygame_quiz\\poop.png")
 poop_size = poop.get_rect().size
 poop_width = poop_size[0]
 poop_height = poop_size[1]
-poop_x_pos = (screen_width / 2) - (poop_width / 2)
-poop_y_pos = (screen_height / 2) - (poop_height / 2)
+poop_x_pos = randrange(0, screen_width - poop_width) # 똥의 x좌표. 0부터 (스크린 너비 - 똥 너비)까지 랜덤
+poop_y_pos = 0 # 초기 y좌표
 
 # 폰트 정의
 game_font = pygame.font.Font(None, 40) # 폰트 객체 생성 (폰트, 크기)
 
 # 총 시간
-total_time = 5
+total_time = 100
 
 # 시작 시간
 start_ticks = pygame.time.get_ticks() # 시작 tick을 받아옴
@@ -56,6 +58,11 @@ start_ticks = pygame.time.get_ticks() # 시작 tick을 받아옴
 running = True
 while running:
     dt = clock.tick(30)
+    poop_y_pos += poop_speed
+
+    if poop_y_pos > screen_height: # == 을 쓰면 작동 안 됨..
+        poop_y_pos = 0
+        poop_x_pos = randrange(0, screen_width - poop_width)
 
     for event in pygame.event.get():
         # type이 quit이면 실행 종료
@@ -65,12 +72,10 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 to_x -= character_speed
+                character = pygame.image.load("C:\\Users\\Joon\\Desktop\\Practice\\Study\\PythonWorkspace\\pygame_quiz\\man_left.png")
             elif event.key == pygame.K_RIGHT:
                 to_x += character_speed
-            elif event.key == pygame.K_UP:
-                to_y -= character_speed
-            elif event.key == pygame.K_DOWN:
-                to_y += character_speed
+                character = pygame.image.load("C:\\Users\\Joon\\Desktop\\Practice\\Study\\PythonWorkspace\\pygame_quiz\\man_right.png")
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -102,10 +107,15 @@ while running:
     poop_rect.left = poop_x_pos
     poop_rect.top = poop_y_pos
 
+    # 충돌 체크
+    if character_rect.colliderect(poop_rect):
+        print("충돌했어요")
+        running = False    
+
     # 화면에 표시
     screen.blit(background, (0, 0))
     screen.blit(character, (character_x_pos, character_y_pos))
-
+    
     screen.blit(poop, (poop_x_pos, poop_y_pos))
 
     # 타이머 넣기, 경과시간 계산
