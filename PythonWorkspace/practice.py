@@ -1318,3 +1318,19 @@ print("우리가 만난지 100일은", today + td)
 
 import byme
 byme.sign()
+
+
+### enumerate
+# 리스트에 있는 index와 value를 가져옴
+lst = ["가", "나", "다"]
+lst2 = []
+
+lst2.append({
+    "one" : 1,
+    "two" : 2,
+    "thr" : 3})
+print(lst2)
+
+for lst2_idx, lst2_val in enumerate(lst2):
+    print(lst2_idx, lst2_val) # 0 {'one': 1, 'two': 2, 'thr': 3} 0번째 인덱스에 해당 값이 들어있다는 의미
+    print(lst2_val['one']) # 1

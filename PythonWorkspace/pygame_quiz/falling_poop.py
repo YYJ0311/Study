@@ -23,19 +23,16 @@ background = pygame.image.load("C:\\Users\\Joon\\Desktop\\Practice\\Study\\Pytho
 
 # 캐릭터
 character = pygame.image.load("C:\\Users\\Joon\\Desktop\\Practice\\Study\\PythonWorkspace\\pygame_quiz\\man_left.png")
-character_size = character.get_rect().size
-character_width = character_size[0]
-character_height = character_size[1]
+character_size = character.get_rect().size # 사이즈 지정
+character_width = character_size[0] # 0번째 값 = width
+character_height = character_size[1] # 1번째 값 = height
 character_x_pos = (screen_width / 2) - (character_width / 2)
-character_y_pos = screen_height - character_height - 10 # 잔디 위로
+character_y_pos = screen_height - character_height - 10 # 잔디 위에 캐릭터 위치
+character_speed = 0.6
 
 # 이동할 좌표
 to_x = 0
-to_y = 0
-
-# 이동 속도
-character_speed = 0.6
-poop_speed = 15
+# to_y = 0
 
 # 똥
 poop = pygame.image.load("C:\\Users\\Joon\\Desktop\\Practice\\Study\\PythonWorkspace\\pygame_quiz\\poop.png")
@@ -43,7 +40,9 @@ poop_size = poop.get_rect().size
 poop_width = poop_size[0]
 poop_height = poop_size[1]
 poop_x_pos = randrange(0, screen_width - poop_width) # 똥의 x좌표. 0부터 (스크린 너비 - 똥 너비)까지 랜덤
+# poop_x_pos = randint(0, screen_width - poop_width) # randint로도 사용 가능
 poop_y_pos = 0 # 초기 y좌표
+poop_speed = 10
 
 # 폰트 정의
 game_font = pygame.font.Font(None, 40) # 폰트 객체 생성 (폰트, 크기)
@@ -58,18 +57,13 @@ start_ticks = pygame.time.get_ticks() # 시작 tick을 받아옴
 running = True
 while running:
     dt = clock.tick(30)
-    poop_y_pos += poop_speed
-
-    if poop_y_pos > screen_height: # == 을 쓰면 작동 안 됨..
-        poop_y_pos = 0
-        poop_x_pos = randrange(0, screen_width - poop_width)
 
     for event in pygame.event.get():
         # type이 quit이면 실행 종료
         if event.type == pygame.QUIT:
             running = False
 
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN: # 키보드를 눌렀을 때
             if event.key == pygame.K_LEFT:
                 to_x -= character_speed
                 character = pygame.image.load("C:\\Users\\Joon\\Desktop\\Practice\\Study\\PythonWorkspace\\pygame_quiz\\man_left.png")
@@ -77,16 +71,16 @@ while running:
                 to_x += character_speed
                 character = pygame.image.load("C:\\Users\\Joon\\Desktop\\Practice\\Study\\PythonWorkspace\\pygame_quiz\\man_right.png")
 
-        if event.type == pygame.KEYUP:
+        if event.type == pygame.KEYUP: # 키보드에서 뗐을 때. 설정을 안 하면 눌렀을 때의 입력값이 계속 반복된다.
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 to_x = 0
             elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 to_y = 0
 
+    # 캐릭터의 위치 정의
     character_x_pos += to_x * dt
-    character_y_pos += to_y * dt
+    # character_y_pos += to_y * dt
 
-    # 가로 경계값 처리
     if character_x_pos < 0:
         character_x_pos = 0
     elif character_x_pos > screen_width - character_width:
@@ -97,6 +91,13 @@ while running:
         character_y_pos = 0
     elif character_y_pos > screen_height - character_height:
         character_y_pos = screen_height - character_height
+
+    # poop 위치 정의
+    poop_y_pos += poop_speed
+
+    if poop_y_pos > screen_height: # == 을 쓰면 작동 안 됨
+        poop_y_pos = 0
+        poop_x_pos = randrange(0, screen_width - poop_width)
 
     # 충돌 처리를 위한 rect 정보 업데이트
     character_rect = character.get_rect()
