@@ -21,7 +21,7 @@ btn4b.pack()
 btn5 = Button(root, fg="red", bg="yellow", text="버튼5") # forground = 글자색, background = 배경색
 btn5.pack()
 
-photo = PhotoImage(file="gui_basic/img.png")
+photo = PhotoImage(file="gui/gui_basic/img.png")
 btn6 = Button(root, image=photo)
 btn6.pack()
 
