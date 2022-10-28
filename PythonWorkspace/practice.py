@@ -1334,3 +1334,16 @@ print(lst2)
 for lst2_idx, lst2_val in enumerate(lst2):
     print(lst2_idx, lst2_val) # 0 {'one': 1, 'two': 2, 'thr': 3} 0번째 인덱스에 해당 값이 들어있다는 의미
     print(lst2_val['one']) # 1
+
+### reverse() / reversed() 차이
+lst = [1, 2, 3, 4, 5]
+print(lst) # [1, 2, 3, 4, 5]
+lst.reverse() # reverse()를 사용하면 기존의 값에 영향을 미침
+print(lst) # [5, 4, 3, 2, 1]
+
+lst2 = [1, 2, 3, 4, 5]
+print("리스트 2 뒤집기 전 : ", lst2) 
+
+lst3 = reversed(lst2)
+print("리스트 2 뒤집은 후 : ", lst2) # reverse()와는 다르게 reversed()는 실제 값에 영향을 미치지 않는다.
+print("리스트3 : ", list(lst3))
