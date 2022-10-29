@@ -1335,6 +1335,7 @@ for lst2_idx, lst2_val in enumerate(lst2):
     print(lst2_idx, lst2_val) # 0 {'one': 1, 'two': 2, 'thr': 3} 0번째 인덱스에 해당 값이 들어있다는 의미
     print(lst2_val['one']) # 1
 
+
 ### reverse() / reversed() 차이
 lst = [1, 2, 3, 4, 5]
 print(lst) # [1, 2, 3, 4, 5]
@@ -1347,3 +1348,17 @@ print("리스트 2 뒤집기 전 : ", lst2)
 lst3 = reversed(lst2)
 print("리스트 2 뒤집은 후 : ", lst2) # reverse()와는 다르게 reversed()는 실제 값에 영향을 미치지 않는다.
 print("리스트3 : ", list(lst3))
+
+
+### 
+kor = ["사과", "바나나", "오렌지"]
+eng = ["apple", "banana", "orange"]
+
+print(list(zip(kor, eng))) # 리스트 2개를 하나씩 가져와서 합쳐줌. [('사과', 'apple'), ('바나나', 'banana'), ('오렌지', 'orange')]
+
+mixed = [('사과', 'apple'), ('바나나', 'banana'), ('오렌지', 'orange')]
+print(list(zip(*mixed))) # * : unzip
+
+kor2, eng2 = zip(*mixed) # 각각 변수에 분리함
+print(kor2)
+print(eng2)
