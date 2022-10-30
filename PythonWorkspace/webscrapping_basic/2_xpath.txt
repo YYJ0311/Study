@@ -1,0 +1,18 @@
+xpath
+유니크한 값이 있을 때, 전체 경로 대신에 줄여서 사용 가능
+
+<학교 이름="A고등학교">
+    <학년 value="1학년">
+        <반 value="1반">
+            <학생 value="1번" 학번="1-1-1">유재석</학생>
+            <학생 value="2번" 학번="1-1-2">조세호</학생>
+            ...
+
+전체 경로 : /학교/학년/반/학생[2]
+xpath : //*[@학번="1-1-5"]
+
+전체 경로 : /html/body/div/div/div/div/div/div/span/a...
+xpath : //*[@id="login"]
+
+전체 경로 : /html/body/div[2]/div[2]/div[3]/div/div[2]/a
+xpath : //*[@id="account"]
