@@ -9,4 +9,16 @@ HTML (Hyper Text Markup Language) 사용
     TechER의 open in browser vsc extension 설치
 
     w3school 참고
+
+user agent
+    구글에 user agen string 검색
+
+    접속하는 브라우저에 따라 user agent가 달라짐
+    서버는 user agent 를 확인해서 정보를 다르게 보여줄 수 있음
+
+beautifulsoup4
+    스크래핑을 하기 위해 사용되는 패키지
+
+lxml
+    구문을 분석하는 parser
 ```
