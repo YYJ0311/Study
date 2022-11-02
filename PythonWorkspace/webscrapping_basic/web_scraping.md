@@ -12,6 +12,7 @@ HTML (Hyper Text Markup Language) 사용
 
 user agent
     구글에 user agen string 검색
+    https://www.whatismybrowser.com/detect/what-is-my-user-agent/
 
     접속하는 브라우저에 따라 user agent가 달라짐
     서버는 user agent 를 확인해서 정보를 다르게 보여줄 수 있음
