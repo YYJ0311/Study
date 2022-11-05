@@ -22,4 +22,20 @@ beautifulsoup4
 
 lxml
     구문을 분석하는 parser
+
+selenium에서 element를 찾기위해 By 사용하기
+    from selenium.webdriver.common.by import By
+
+    driver.find_element(By.XPATH, '//button[text()="Some text"]')
+    driver.find_element(By.XPATH, '//button')
+    driver.find_element(By.ID, 'loginForm')
+    driver.find_element(By.LINK_TEXT, 'Continue')
+    driver.find_element(By.PARTIAL_LINK_TEXT, 'Conti')
+    driver.find_element(By.NAME, 'username')
+    driver.find_element(By.TAG_NAME, 'h1')
+    driver.find_element(By.CLASS_NAME, 'content')
+    driver.find_element(By.CSS_SELECTOR, 'p.content')
+
+    driver.find_elements(By.ID, 'loginForm')
+    driver.find_elements(By.CLASS_NAME, 'content')
 ```
