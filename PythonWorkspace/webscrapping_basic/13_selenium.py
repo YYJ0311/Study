@@ -63,3 +63,6 @@ browser.get("http://naver.com")
     # 현재 탭만 종료
 # browser.quit()
     # 브라우저 전체 종료
+
+# exit()
+    # python 인터프리터 종료
