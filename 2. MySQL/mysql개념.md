@@ -50,7 +50,7 @@
                 (3  Andrew  Busan)
                 증가된 AUTO_INCREMENT 컬럼값과(ex. id) 마지막에 입력한 주소값이 나온다.
 
-## 프로시저(procedure)
+# 프로시저(procedure)
     여러 SQL 문을 하나의 SQL 문처럼 정리하여 실행할 수 있게 만든 것 
     1. 프로시저 생성
         DELIMITER $$
@@ -228,7 +228,7 @@
         네이버
             10페이지까지만 제공
 
-# MySQL) 두개의 select 값을 합산하는 방법
+# 두개의 select 값을 합산하는 방법
     SELECT SUM(cnt) 
     FROM (
 		SELECT COUNT(*) as CNT FROM tb_user
@@ -240,7 +240,7 @@
 
     from에도 alias를 필수적으로 붙여야 함
 
-# mysql) 스케줄러 사용하기
+# 스케줄러
     1. 스케줄러 사용 설정 확인하기
         show variables like 'event%';
             => 조회 결과 value가 OFF인 경우 아래 명령어를 실행한다
@@ -462,3 +462,29 @@
 
         삭제
             DROP event `이벤트명`;
+ 
+# DATE_ADD() / DATE_SUB()
+    MySQL에서 시간 더하기, 빼기 함수
+    DATE_ADD : 기준날짜 + 입력된 기간
+    DATE_SUB : 기준날짜 - 입력된 기간
+
+    date_add(CURDATE(),INTERVAL -1 day)
+        : 오늘 년월일을 기준으로 하루를 뺀 날짜
+
+# PUT 과 PATCH 차이
+    PUT은 모든 항목을 수정함. 따라서 입력받지 않은 항목은 null로 바꿔버린다.
+    PATCH는 입력받은 항목만 수정함. 따라서 입력받지 않은 항목은 그대로 남고 입력받은 항목만 수정된다.
+
+# INTO OUTFILE 사용 & 에러
+    SQL Error [1290] [HY000]: The MySQL server is running with the --secure-file-priv option so it cannot execute this statement
+        : --secure-file-priv 옵션은 데이터 export/import 기능을 제한하는 옵션이므로 추가 설정이 필요하다.
+        
+        0. 작업관리자 서비스에서 mysql 중지
+        1. show variables like "secure_file_priv";
+            를 통해서 데이터 export/import 가 가능한 경로 확인
+        2. 모든 경로에서 파일을 읽고 쓸 수 있도록 설정
+            my.ini는 보통 MySQL basedir 하위에 있으므로 show variables like '%dir'; 명령어를 통해 위치 확인 가능.
+            또는 PROGRAMDATA/MySQL/MySQL Server X.X 경로에서 MySQL 설정 파일(my.ini)를 찾는다.
+            ini 파일에서 secure-file-priv = "" 로 수정
+        3. show variables like "secure_file_priv";로 경로 업데이트 된 것 확인
+        4. 데이터 조작하기

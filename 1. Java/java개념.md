@@ -422,3 +422,20 @@
         BigInteger totalMinute = (BigInteger) data.get("totalDrivingTime");
         BigInteger minute = new BigInteger("60");
         => totalMinute.divide(minute)
+
+# Class.forName()
+    컴파일 타임에 직접적인 참조 없이 런타임에 동적으로 클래스를 로드하기 위함
+    Class.forName()를 이용하여 필요한 데이터베이스의 드라이버를 로드한다.
+
+    사용 예 
+        Class.forName ("org.sqlite.JDBC");
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+
+    JDBC를 이용하여 SQLite를 사용하기 위한 방법
+        1. Class.forName("org.sqlite.JDBC");
+        2. connection = DriverManager.getConnection(jdbc:sqlite:file:~)
+        3. Statement statement = connection.createStatement();
+        4. statement.executeUpdate("sql 문")
+
+        JDBC 4.0 이후로는 Class.forName() 메소드를 호출하지 않아도 자동으로 드라이버를 초기화한다.
+
