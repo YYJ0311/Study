@@ -1,4 +1,9 @@
-## 중복데이터 관리 방법
+# 헷갈리는 문법
+    # primary key 추가
+        alter table infocar_internal_data.data_daily_stats ADD PRIMARY key (컬럼명);
+        alter table DB명.테이블명 ADD PRIMARY key (컬럼명1, 컬럼명2);
+
+# 중복데이터 관리 방법
     1. INSERT IGNORE
         중복된 데이터 값이 있다면 삽입을 무시한다
         한 테이블에 id와 name, address 컬럼이 있고 name 컬럼에 unique인덱스가 걸려있는 경우,
@@ -264,10 +269,6 @@
     5. 스케줄러 삭제
         DROP event 스케줄러명
 
-# primary key 추가
-    alter table infocar_internal_data.data_daily_stats ADD PRIMARY key (컬럼명);
-    alter table DB명.테이블명 ADD PRIMARY key (컬럼명1, 컬럼명2);
-
 # union(full outer join)
     mysql에선 full outer join을 지원하지 않아서 left join과 right join한 값을 union해서 구한다.
 
@@ -488,3 +489,24 @@
             ini 파일에서 secure-file-priv = "" 로 수정
         3. show variables like "secure_file_priv";로 경로 업데이트 된 것 확인
         4. 데이터 조작하기
+
+# 테이블 이동 및 데이터 복사
+    디비버에서 기능을 지원하지만 sql문으로 작성해봄
+
+    테이블 구조만 복사
+        CREATE TABLE IF NOT EXISTS 복사테이블 LIKE 원본테이블;
+
+    테이블 생성 및 데이터 복사
+        use 사용할db명;
+        create table if not exists 테이블명 select * from db명.테이블명;
+
+    데이터 복사
+        INSERT INTO 복사테이블 SELECT * FROM 원본테이블;
+        INSERT INTO 복사테이블 (컬럼1 [, 컬럼2 ...]) SELECT 컬럼1 [, 컬럼2 ...] FROM 원본테이블;
+
+    특이사항
+        1. 이렇게 복사된 테이블과 데이터는 원본에서 걸어두었던 제약조건(primary key, auto_increment 등)까지는 가져오지 못하므로 복사해온 테이블에 대해 새로 추가해줘야 한다.
+
+        2. 복사해서 새로 생긴 테이블의 크기(용량)이 원본 테이블보다 작게 보임
+            => 복사해오면서 필요없는 공간이 빠져나가서 생긴 차이인 듯
+            원본 테이블에서 delete/update 등으로 커졌던 테이블크기가 그대로 유지되기 때문으로 보인다.
