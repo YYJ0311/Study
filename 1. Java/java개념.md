@@ -173,6 +173,14 @@
 
 # IOUtils
     IO(입출력, In Out) 스트림 조작 유틸리티
+
+    Apache Commons IO dependency 주입 필요
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
     메소드
         closeQuietly - 이 메서드는 null 및 예외를 무시하고 스트림을 닫습니다.
         toXxx/read - 이 메서드는 스트림에서 데이터를 읽습니다.
