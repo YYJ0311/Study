@@ -434,6 +434,7 @@
 # Class.forName()
     컴파일 타임에 직접적인 참조 없이 런타임에 동적으로 클래스를 로드하기 위함
     Class.forName()를 이용하여 필요한 데이터베이스의 드라이버를 로드한다.
+    사용을 위해서 dependency(sqlite-jdbc) 추가가 필요하다.
 
     사용 예 
         Class.forName ("org.sqlite.JDBC");
@@ -447,3 +448,7 @@
 
         JDBC 4.0 이후로는 Class.forName() 메소드를 호출하지 않아도 자동으로 드라이버를 초기화한다.
 
+# sqlcipher
+    SQLite는 기본적으로 데이터베이스 파일 암호화를 지원하지 않음
+    데이터 암호화를 하기 위해 SEE, SQLCipher, SQLiteCrypt, wxSQLite3 같은 수정된 버전의 SQLite를 사용해야 한다.
+    
