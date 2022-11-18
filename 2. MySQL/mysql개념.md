@@ -535,4 +535,24 @@
     이렇게 만들어진 view를 select를 이용하여 사용(조회)할 수 있음
     
     -- 생성된 뷰 조회(뷰 이름 : view_name)
-    SELECT * FROM view_name;    
+    SELECT * FROM view_name;
+
+# from절에는 concat을 쓸 수 없다
+    controller에서 파라미터를 받아와서 from절에서 조건별로 리스트를 가져오려고 했다.
+
+    정확하게는 from절에 concat 자체는 사용 가능하지만 concat으로 만든 것은 문자열이라서 테이블로 인식하지 못한다. 따라서 concat으로 만든 테이블명은 실제 존재하는 테이블명이 아니기 때문에 해당 테이블의 데이터를 가져올 수 없다.
+
+    mybatis from에 파라미터 받는 방법???
+        파라미터로 테이블명을 통째로 넘겨주어도 인식하지 못하는걸 보면 from에 #{} 사용이 불가한 것 같다.
+
+        해결
+            넘겨줄 파라미터 값을 hashmap에 저장해서 가져오고 from에 if test문 작성.
+            파라미터를 조건으로 if test문을 여러개 작성해서 값을 가져올 수 있음!
+
+            select
+                1,
+                2
+            from 
+                <if test = "파라미터.equals('비교값')">
+                    db명.테이블명
+                </if>

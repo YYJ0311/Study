@@ -451,4 +451,74 @@
 # sqlcipher
     SQLite는 기본적으로 데이터베이스 파일 암호화를 지원하지 않음
     데이터 암호화를 하기 위해 SEE, SQLCipher, SQLiteCrypt, wxSQLite3 같은 수정된 버전의 SQLite를 사용해야 한다.
+
+# Enum 클래스
+    JDK 1.5부터는 C언어의 열거체보다 더욱 향상된 성능의 열거체를 정의한 Enum 클래스를 사용할 수 있다.
+
+    자바 열거체의 장점
+        1. 열거체를 비교할 때 실제 값뿐만 아니라 타입까지도 체크
+        2. 열거체의 상수값이 재정의되더라도 다시 컴파일 할 필요가 없음
+
+    enum 정의 및 사용
+        문법 ) enum 열거체이름 { 상수1이름, 상수2이름, ... }
+        예제 ) enum Rainbow { RED, ORANGE, YELLOW, GREEN, BLUE, INDIGO, VIOLET }
+        사용 ) 열거체이름.상수이름 => Rainbow.RED
     
+    열거체의 상수값 정의
+        첫 번째 상수값은 0부터 설정되며, 그다음은 바로 앞의 상수값보다 1만큼 증가되며 설정됨
+        불규칙한 값을 상수값으로 설정하고 싶으면 상수의 이름 옆에 괄호()을 추가하고 상수값을 명시해서 사용 가능. 하지만 특정 값을 저장할 수 있는 인스턴스 변수와 생성자를 추가해야 함.
+
+        예제
+        enum Rainbow {
+            RED(3), ORANGE(10), YELLOW(21), GREEN(5), BLUE(1), INDIGO(-1), VIOLET(-11);
+            private final int value;
+            Rainbow(int value) { this.value = value; }
+            public int getValue() { return value; }
+        }
+    
+    메소드
+        enum Rainbow { RED, ORANGE, YELLOW, GREEN, BLUE, INDIGO, VIOLET }
+
+        values() : 해당 열거체의 모든 상수를 저장한 배열을 생성하여 반환
+            예제        
+                public class Enum01 {
+                    public static void main(String[] args) {
+                        Rainbow[] arr = Rainbow.values();
+                        for (Rainbow rb : arr) {
+                            System.out.println(rb); // RED, ORANGE, YELLOW, ...
+                        }
+                    }
+                }
+
+        valueOf() : 전달된 문자열과 일치하는 해당 열거체의 상수
+            예제
+                public class Enum02 {
+                    public static void main(String[] args) {
+                        Rainbow rb = Rainbow.valueOf("GREEN");
+                        System.out.println(rb); // GREEN
+                    }
+                }
+        
+        ordinal() : 해당 열거체 상수가 열거체 정의에서 정의된 순서(0부터 시작)를 반환함
+            반환되는 값은 열거체 정의에서 해당 열거체 상수가 정의된 순서이며, 상숫값 자체가 아님
+            예제
+                public class Enum03 {
+                    public static void main(String[] args) {
+                        int idx = Rainbow.YELLOW.ordinal();
+                        System.out.println(idx); // 2
+                    }
+                }
+
+            불규칙적인 상수값을 가지는 열거체에서의 예제
+            enum Rainbow {
+                RED(3), ORANGE(10), YELLOW(21), GREEN(5), BLUE(1), INDIGO(-1), VIOLET(-11);
+                private final int value;
+                Rainbow(int value) { this.value = value; }
+                public int getValue() { return value; }
+            }
+            public class Enum04 {
+                public static void main(String[] args) {
+                    System.out.println(Rainbow.YELLOW.ordinal()); // 21이 아닌 기존 자리수에 해당하는 2 가 반환됨
+                }
+            }
+

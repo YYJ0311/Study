@@ -101,16 +101,6 @@
 
     최종적으로 마지막 단계의 메서드에서는 try ~ catch 블록을 통해 처리해야 함
 
-# spring - sql문(mapper xml)에서 useGeneratedKeys와 keyProperty
-    id가 auto_increment이고 name과 password를 받아서 db에 insert 하는 경우, id는 입력하지 않아도 자동으로 1씩 증가하며 저장된다.
-    insert를 성공하면 추가된 id, name, password를 리턴하게끔 하면 id는 null로 나오게 되는데 이 때, useGeneratedKeys를 이용하여 id도 null값 대신 실제 증가된 값이 출력되게 만들 수 있다.
-    
-    getGeneratedKeys은 JDBC의 메소드로 자동 생성 키값들을 사용하기 위해서 사용된다.
-
-    keyProperty는 리턴 된 키 값들을 어느 필드에 set 할 건지를 정한다. id를 적으면 id값을 받아온다.
-
-    <insert id="insert" parameterType="타입 주소" useGeneratedKeys="True" keyProperty="id"> 와 같이 사용한다.
-
 # servlet-context.xml / root-context.xml / web.xml 차이점
     우선, xml 파일은 모두 객체(Bean)를 정의함
 
