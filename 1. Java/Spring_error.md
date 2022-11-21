@@ -41,3 +41,18 @@
     해결방법
         db주소 뒤에 serverTimezone=UTC를 붙여준다.
         ex) <property name="url" value="jdbc:mysql://db주소:포트번호/db명?serverTimezone=UTC&amp;"/>
+
+# mockMvc 테스트 에러
+    1. Class<SpringJUnit4ClassRunner> cannot be resolved to a type
+        @RunWith 가 제대로 import되지 않고 빨간줄 에러남
+        
+        해결방법
+            - pom.xml에서 org.springframework-version과 spring-test의 버전을 똑같게 맞춰줌
+            - spring-test의 scope 항목을 주석처리
+    
+    2. WebAppConfiguration cannot be resolved to a type
+        @WebAppConfiguration 빨간줄 에러
+
+        해결방법
+            - 스프링 프레임워크 버전을 3.2 이상으로 변경
+            - spring-test의 scope 항목을 주석처리

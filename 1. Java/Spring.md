@@ -123,3 +123,17 @@
 
     dependency 추가, SwaggerConfig 파일에서 swagger설정, api 클래스에 @ApiOperation, api 메소드에 @ApiParam 등을 붙여서 표시할 정보를 선택할 수 있음
     서버 실행시키고 localhost:8080/swagger-ui.html로 접속하여 swagger를 사용할 수 있다.
+
+# MockMvc
+    MockMvc는 웹 어플리케이션을 어플리케이션 서버에 배포하지 않고 테스트용 MVC환경을 만들어 요청 및 전송, 응답기능을 제공해주는 유틸리티 클래스이다.
+    즉, 내가 컨트롤러를 테스트하고 싶을 때, 실제 서버에 올리지 않고 테스트용으로 시뮬레이션하여 MVC가 되도록 도와주는 클래스이다.
+
+# spring 버전 변경하기
+    pom.xml의 <org.springframework-version> 항목에서 버전을 직접 바꾸면 된다.
+        <org.springframework-version>3.1.1.RELEASE</org.springframework-version>
+        ==> <org.springframework-version>4.3.6.RELEASE</org.springframework-version>
+    
+    Maven Dependencies 라이브러리를 확인하면 입력한 버전으로 업데이트 된 걸 볼 수 있다.
+
+    * 스프링 버전 별 지원하는 jdk 버전이 정해져 있음
+    * 저장 후 maven - update project 하기

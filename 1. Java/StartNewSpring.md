@@ -42,10 +42,6 @@
     resource annotation 사용을 위한 dependency
         javax.annotation-api 추가
 
-# ??
-    public abstract interface DistanceTimeMapper { }
-    에서 abstract 있고 없고의 차이??
-
 # 에러
     1. Error creating bean with name 'countDataController': Injection of resource dependencies failed; No bean named 'co.kr.mureung.src.CountData.service.Impl' is defined
         해결 ) root-context에서 xml을 제대로 인식하지 못해 생긴 오류였다

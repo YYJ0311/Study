@@ -6,4 +6,8 @@
     요청을 최소화한다
         모든 웹 요청은 서버에 부하를 주기 때문에 많은 수의 작은 리소스(경로)를 보여주는 주소를 작성하는 것은 안 좋다.
 
+    동사보다 명사를 사용하자
+        [POST] /updateuser/{userId} 또는 [GET] /getusers // BAD
+        [PUT] /user/{userId} // Good
+
 https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design
