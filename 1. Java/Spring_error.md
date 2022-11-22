@@ -56,3 +56,11 @@
         해결방법
             - 스프링 프레임워크 버전을 3.2 이상으로 변경
             - spring-test의 scope 항목을 주석처리
+
+# Dynamic Web Module 4.0 requires Java 1.8 or newer.
+    폴더 탐색창에는 어디서 난 에러인지 안 보임
+
+    해결방법
+        pom.xml에서 maven-compiler-plugin 아래 source와 target의 숫자를 jdk 버전과 일치시킴
+            <source>1.8</source>
+            <target>1.8</target>
