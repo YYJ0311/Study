@@ -14,15 +14,6 @@
 
     CronTrigger
         공백으로 구분되는 6~7 자리의 문자로 수행시간이 설정됨
-        크론 표현식
-            https://en.wikipedia.org/wiki/Cron#CRON_expression 참조
-
-            ex) 초 분 시 일 월 요일 연도
-                0 15 10 * * ? 2014 : 2014년 동안 매일 오전 10시 15분에
-                0 10,44 14 ? 3 WED : 3월 동안 매주 수요일 오후 2 :10과 2:44분에
-                0 0 12 1/5 * ? : 해당 월의 첫날부터 시작하여 매월 5일 마다 평일 정오에
-
-            크론 생성 사이트 : http://www.cronmaker.com/
             
 # System.currentTimeMillis()
     1970-1-1 부터 경과한 시간을 long 타입, ms(1/1000초) 단위로 리턴
