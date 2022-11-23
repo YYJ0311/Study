@@ -1,6 +1,10 @@
 # 사용
     내장되어 있는 spring task 기능을 사용해서 scheduler를 구현한다.
 
+    mvc 패턴과 같이 사용
+        스케줄을 저장할 클래스를 별도로 작성, 해당 클래스에 @Component를 붙이고, 스케줄 설정함 (@Scheduled(cron=" ~ "))
+        사용자의 요청을 받아서 실행되는 경로(controller - service)에서 스케줄 클래스를 new로 가져와서 스케줄이 저장된 클래스의 메소드 호출
+
 # 설정
     appServlet > servlet-context.xml
         - bean 태그에 task 추가
@@ -16,6 +20,8 @@
             <context:component-scan base-package="패키지 경로" />
                 <task:scheduler id="jobScheduler" pool-size="10" />
                 <task:annotation-driven scheduler="jobScheduler" />
+            또는
+            <task:annotation-driven />
 
     클래스 파일
         @Component
