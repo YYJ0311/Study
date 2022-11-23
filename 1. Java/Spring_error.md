@@ -64,3 +64,9 @@
         pom.xml에서 maven-compiler-plugin 아래 source와 target의 숫자를 jdk 버전과 일치시킴
             <source>1.8</source>
             <target>1.8</target>
+
+# java.lang.UnsupportedClassVersionError: org/springframework/jdbc/datasource/DriverManagerDataSource has been compiled by a more recent version of the Java Runtime
+    DriverManagerDataSource 의 컴파일 버전이 설치된 자바 버전보다 높아서 생기는 오류
+
+    해결방법
+        

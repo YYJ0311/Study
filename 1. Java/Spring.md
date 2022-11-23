@@ -60,6 +60,7 @@
     </servlet-mapping>
 
 # root-context.xml
+    또는 applicationContext.xml
     스프링의 환경설정 파일
 
 # servlet-context.xml
@@ -137,3 +138,41 @@
 
     * 스프링 버전 별 지원하는 jdk 버전이 정해져 있음
     * 저장 후 maven - update project 하기
+
+# MVC 프로젝트 실행순서
+    요청 -> DispatcherServlet -> HandlerMapping -> 요청 처리하기 (Controller <-> Service <-> DAO <-> DB) -> DispatcherServlet -> ViewResolver -> View -> DispatcherServlet -> 응답
+    
+    1. 요청
+        Client가 url로 접근하여 정보 요청
+    2. DispatcherServlet 
+        web.xml에 포함되어 출력 역할을 하는 클래스
+        Springframework에서 기본 제공
+    3. HandlerMapping
+        servlet 설정파일에 포함
+        Springframework에서 기본 제공
+        @RequestMapping 제공
+    4. Controller <-> Service <-> DAO <-> DB
+        controller로 처리 요청을 보냄
+        Bean 등록
+
+        db에서 다시 거꾸로 controller로 돌아오게 됨
+        클라이언트의 요청을 처리하고 결과를 출력할 View의 이름을 return함
+    5. DispatcherServlet
+        컨트롤러에서 보내온 View 이름을 토대로 처리 View를 검색
+    6. ViewResolver
+        web.xml에 포함
+        Springframework에서 기본 제공
+        p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"
+
+        처리결과를 View에 송신
+    7. View
+        처리결과가 포함된 View를 DispatcherServlet로 송신
+    8. DispatcherServlet
+        최종결과 출력
+
+# DAO (Data Access Object)
+    DB의 data에 접근하기 위한 객체
+    DB에 접근하기 위한 로직과 비즈니스 로직을 분리하기 위해 사용
+
+    service에서 이어지는 mapper와 비슷한 개념인듯
+    db 쿼리문을 받아서 service로 결과를 넘겨준다

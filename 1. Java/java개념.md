@@ -522,3 +522,13 @@
                 }
             }
 
+# AWT(Abstract Window Toolkit)
+    GUI프로그래밍(윈도우 프로그래밍)을 위한 도구
+    Java로 구현하지 않고 OS의 컴포넌트를 그대로 사용
+
+    * Swing
+        AWT를 확장한 GUI프로그래밍 도구
+        AWT보다 더 많은 종류의 컴포넌트 제공
+        OS의 컴포넌트를 사용하지 않고 J~로 구현
+    
+    awt의 Desktop 클래스를 이용하여 윈도우에서 파일 실행이 가능함
