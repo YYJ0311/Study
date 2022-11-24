@@ -20,8 +20,6 @@
             <context:component-scan base-package="패키지 경로" />
                 <task:scheduler id="jobScheduler" pool-size="10" />
                 <task:annotation-driven scheduler="jobScheduler" />
-            또는
-            <task:annotation-driven />
 
     클래스 파일
         @Component
