@@ -81,4 +81,35 @@
         버전 6.0.0에서 생긴 오류가 5.2.9.RELEASE 에선 사라짐
         jdk 8버전이 spring-context-support 6버전과 호환 불가해서 생긴 오류였다.
         
-    
+# Error creating bean with name XXX defined in ServletContext resource [/WEB-INF/spring/root-context.xml]
+    경로가 root-context라고 나와서 거기만 찾아봤는데, 문제는 거기가 아니라 servlet-context.xml(dispatcher-servlet.xml)이었다.
+
+    해결방법
+        <context:component-scan base-package="co.kr.infocar"/>
+        를 다음과 같이 바꿈
+        <context:component-scan base-package="co.kr.infocar">
+            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>	 
+	    </context:component-scan>
+
+# Error creating bean with name 'dataSource' defined in ServletContext
+# Invalid bean name 'txAdvice' in bean reference
+    스프링과 DB를 연동할 때 dataSource를 빈으로 생성하지 못함
+
+    해결방법
+        찾는중
+
+# Class '~' not found [config set: testQuartz/web-context]
+    실제 클래스가 없는지 확인(jar 파일 유무 확인)
+    패키지명이나 클래스명, jar파일 모두 이상이 없으면 상태(nature)를 제거했다가 다시 추가한다.
+
+    프로젝트 우클릭 - spirng - Remove Spring Project Nature -  Add Spring Project Nature
+
+# 기본 클래스 help.me.from.App을(를) 찾거나 로드할 수 없습니다.
+    test에 작성한 클래스 파일을 실행하면 위 문구가 나왔다.
+    다른 이유로 클래스 파일을 읽지 못해 생긴 오류인 것 같다
+    실행될 경로를 수동으로 잡아준다.
+
+    해결방법
+        이클립스 메뉴 중 Run -> run configurations -> Classpath -> User Entries -> 우측 Advanced -> Add Folders -> 해당 프로젝트 클릭 후 -> classes 선택
+

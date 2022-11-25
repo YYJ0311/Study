@@ -16,7 +16,9 @@
                     ~.xsd
                     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd">
 
-        - 스케줄러 파일이 존재하는 패키지를 찾기위한 component-scan 설정
+        - 스케줄러 파일이 존재하는 패키지 찾기 & 스케줄러 pool size 설정
+            servlet-context.xml에서 다음 코드 추가
+            
             <context:component-scan base-package="패키지 경로" />
                 <task:scheduler id="jobScheduler" pool-size="10" />
                 <task:annotation-driven scheduler="jobScheduler" />
