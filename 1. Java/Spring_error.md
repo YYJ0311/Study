@@ -111,5 +111,15 @@
     실행될 경로를 수동으로 잡아준다.
 
     해결방법
-        이클립스 메뉴 중 Run -> run configurations -> Classpath -> User Entries -> 우측 Advanced -> Add Folders -> 해당 프로젝트 클릭 후 -> classes 선택
+        1. 이클립스 메뉴 중 Run -> run configurations -> Classpath -> User Entries -> 우측 Advanced -> Add Folders -> 해당 프로젝트 클릭 후 -> classes 선택
 
+        2. 프로젝트 우클릭 - properties - run/debug settings - 모두 delete - new - Main class에 실행하고자 하는 클래스 선택 - apply
+
+# Failed to classload type while reading annotation metadata.
+# java.lang.ClassNotFoundException
+    시도한 것들
+        프로젝트 clean
+        maven update
+        job 설정 xml 내용 삭제
+        jackson 최신버전 주입
+        
