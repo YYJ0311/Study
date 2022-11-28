@@ -10,7 +10,8 @@ res = requests.get(url, headers=headers)
 res.raise_for_status()
 soup = BeautifulSoup(res.text, "lxml")
 
-movies = soup.find_all("div", attrs={"class":"VfPpkd-EScbFb-JIbuQc UVEnyf"})
+# movies = soup.find_all("div", attrs={"class":"VfPpkd-EScbFb-JIbuQc UVEnyf"})
+movies = soup.find_all("div", attrs={"class":"hP61id"})
 print(len(movies))
 
 ### html 만들기
