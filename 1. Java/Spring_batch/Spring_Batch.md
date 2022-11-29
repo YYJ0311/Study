@@ -68,18 +68,32 @@
     Step
         스프링 배치에서 가장 일반적으로 상태를 보여주는 단위
         각 Step은 Job을 구성하는 독립된 작업의 단위로, Job은 최소한 1개 이상의 Step을 가져야 하며 Job의 실제 일괄 처리를 제어하는 모든 정보가 들어있다.
-        Step에는 Tasklet, Chunk 2가지가 있다.
+        Step은 Tasklet, Chunk 2가지의 처리방식을 지원한다.
     Tasklet
-        Step이 중지될 때까지 execute 메서드가 계속 반복해서 수행하고 수행할 때마다 독립적인 트랜잭션이 얻어진다. 
+        하나의 메소드로 구성되어 있는 간단한 인터페이스
+        Step이 중지(예외 반환 또는 throw)될 때까지 execute 메서드가 계속 반복해서 수행하고 수행할 때마다 독립적인 트랜잭션이 얻어진다. 
         초기화, 저장 프로시저 실행, 알림 전송과 같은 잡에서 일반적으로 사용된다.
     Chunk
-        한 번에 하나씩 데이터(row)를 읽어 Chunk라는 덩어리를 만든 뒤, Chunk 단위로 트랜잭션을 다루는 것
+        한 번에 하나씩 데이터(row)를 읽어 Chunk라는 덩어리를 만든 뒤, Chunk 단위로 트랜잭션을 다룬다.
         Chunk 단위로 트랜잭션을 수행하기 때문에 실패할 경우엔 해당 Chunk 만큼만 롤백이 되고, 이전에 커밋된 트랜잭션 범위까지는 반영이 된다.
-        Chunk 기반 Step은 ItemReader, ItemProcessor, ItemWriter라는 3개의 주요 부분으로 구성될 수 있다.
+        Chunk 기반 Step은 ItemReader, ItemProcessor, ItemWriter라는 3개의 주요 부분으로 구성될 수 있고 다음과 같이 실행된다.
+            읽기(Read) : DB에서 배치처리를 할 Data를 읽어온다
+            처리(Processing) : 읽어 온 Data를 가공, 처리한다.
+            쓰기(Write) : 가공, 처리한 데이터를 DB에 저장한다.
 
-        ItemReader와 ItemProcessor에서 데이터는 1건씩 다뤄지고, Writer에선 Chunk 단위로 처리된다.
+            ItemReader와 ItemProcessor에서 데이터는 1건씩 다뤄지고, Writer에선 Chunk 단위로 처리된다.
+    
+        Chunk 지향 처리에서 배치 수행 코드
+            List items = new Arraylist();
+            for(int i = 0; i < commitInterval; i++){
+                Object item = itemReader.read()
+                Object processedItem = itemProcessor.process(item);
+                items.add(processedItem);
+            }
+            itemWriter.write(items);
 
-        일반적으로 스프링 배치는 대용량 데이터를 다루는 경우가 많기 때문에 Tasklet보다 상대적으로 트랜잭션의 단위를 짧게 하여 처리할 수 있는 ItemReader, ItemProcessor, ItemWriter를 이용한 Chunk 지향 프로세싱을 이용한다.
+        일반적으로 스프링 배치는 대용량 데이터를 다루는 경우가 많기 때문에 Tasklet보다 상대적으로 트랜잭션의 단위를 짧게 하여 처리할 수 있는 Chunk 지향 프로세싱(ItemReader, ItemProcessor, ItemWriter)을 이용한다.
+
     ItemReader
         Step에서 Item을 읽어오는 인터페이스
         ItemReader에 대한 다양한 인터페이스가 존재하며 다양한 방법으로 Item을 읽어 올 수 있다.
@@ -91,6 +105,13 @@
         Writer는 처리 결과물에 따라 Insert 또는 Update가 될 수 있고, Queue를 사용한다면 Send가 될 수도 있다. 
         Read와 동일하게 다양한 인터페이스가 존재한다.
         기본적으로 Item을 Chunk로 묶어 처리한다.
+    
+# Chunk Size와 Paging
+    Spring Batch에는 다양한 ItemReader와 ItemWriter가 존재한다. 대용량 배치 처리를 하게되면 item을 읽어올 때 Paging 처리를 하는게 효과적이며, Reader에서는 이 Paging 처리를 지원하고 있다.
+    또한 적절한 Paging 처리와 Chunk Size를 설정하여 더욱 효과적인 배치처리를 할 수 있다.
+
+    Paging Size가 5, Chunk Size가 10인 경우, 2번의 Read가 이루어진 후에 1번의 Transaction이 수행된다. 즉, 1번의 Transaction을 위해 2번의 쿼리 수행이 발생하는 것이다.
+    1번의 Read 쿼리 수행시 1번의 Transaction이 수행되는 것이 성능을 위한 가장 적절한 Paging Size와 Chunk Size이기 때문에, 둘을 동일하게 설정하는 것이 추천된다.
 
 # 그 외 Spring Batch 용어
     JobInstance
