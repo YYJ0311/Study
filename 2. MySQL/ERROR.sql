@@ -6,5 +6,3 @@
     `root`@`%` -> `root`@`localhost`
     CREATE DEFINER=`root`@`localhost` PROCEDURE db명.프로시저명 (파라미터)
 
-
--- 

@@ -9,6 +9,8 @@
     - 대용량의 비즈니스 데이터를 복잡한 작업으로 처리해야하는 경우
     - 특정한 시점에 스케쥴러를 통해 자동화된 작업이 필요한 경우 (ex. 푸시알림, 월 별 리포트)
     - 대용량 데이터의 포맷을 변경, 유효성 검사 등의 작업을 트랜잭션 안에서 처리 후 기록해야하는 경우
+    - 데이터베이스 파일 읽기 또는 저장 프로시저 실행
+    - 데이터베이스 간에 대량 데이터 이동, 변환
 
     Spring Batch는 로깅/추적, 트랜잭션 관리, 작업 처리 통계, 작업 재시작, 건너뛰기, 리소스 관리 등 대용량 레코드 처리 에필 수적인 재사용 가능한 기능을 제공한다. 또한 최적화 및 파티셔닝 기술을 통해 대용량 및 고성능 일괄 작업을 가능하게 하는 고급 기술 서비스 및 기능을 제공한다.
 
@@ -142,3 +144,40 @@
         JobExecutionContext은 Commit 시점에 저장되고, StepExecutionContext은 실행 사이에 저장된다.
 
         ExecutionContext를 통해 Step간 Data 공유가 가능하며, Job 실패시 ExecutionContext를 통한 마지막 실행 값을 재구성 할 수 있다.
+
+# MySQL 연동과 Meta Table
+    Spring Batch는 비즈니스 로직만 작성해서 정상적으로 실행되지 않는다! 
+    개발자가 작성한 작업이 아주 잘 만들어졌다고 하더라도, 주기에 따라 지속적으로 작동한다면 오류가 생길 수밖에 없다. 
+    따라서 Spring Batch에서는 작업을 수행하면서 일련의 상태에 관한 메타 데이터들을 메타 테이블에 저장해서 실패한 작업에 대한 기록을 남겨 이후의 일어날 수도 있는 실패를 대비 할 수 있다.
+
+    메타 테이블을 사용하기 위해 DB와 Batch를 연동해야 한다.
+    연동하는 방법은 DB에 Batch가 사용하는 table을 직접 만들거나, 프로젝트 실행 시 자동으로 만들게 할 수 있다. 
+    하지만 application이 DDL에 대한 권한(테이블 생성)을 갖는 것은 추천되지 않으므로, SQL문을 직접 실행하는 것이 낫다.
+
+    sql문은 프로젝트 내부 Spring Batch JAR 파일(Maven Dependencies에서 org.springframework.batch.core)을 확인거나, 공식 사이트(https://docs.spring.io/spring-batch/docs/3.0.x/reference/html/metaDataSchema.html)에서 확인 가능
+
+    테스트용 자동 생성
+        <jdbc:initialize-database data-source="dataSource"> 
+            <jdbc:script location="org/springframework/batch/core/schema-drop-mysql.sql" /> 
+            <jdbc:script location="org/springframework/batch/core/schema-mysql.sql" /> 
+        </jdbc:initialize-database>
+
+# Batch Meta Table
+    BATCH_JOB_INSTANCE
+        실행한 Job에 대한 기록
+        JobInstance에 대한 모든 정보를 가지고 있다
+
+        JOB_INSTANCE_ID : pk
+        VERSION : 해당 레코드에 update 될 때마다 1씩 증가
+        JOB_NAME : 실행한 Job의 이름
+        JOB_KEY : 실행 시점에 부여된 값으로, JobParameter의 값을 통해 식별함
+
+    BATCH_JOB_EXECUTION
+        BATCH_JOB_INSTANCE의 부모테이블
+        BATCH_JOB_INSTANCE가 실행했던 Job의 성공/실패 내역을 보여준다
+
+        Batch는 실패한 실행에 대해서 동일한 파라미터로 다시 실행 요청이 들어와도 실행시켜준다
+    
+    BATCH_JOB_EXECUTION_PARAMS
+        테이블의 파라미터 값을 담고 있는 테이블
+

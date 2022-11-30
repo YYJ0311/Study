@@ -176,3 +176,9 @@
 
     service에서 이어지는 mapper와 비슷한 개념인듯
     db 쿼리 결과를 받아서 service로 결과를 넘겨준다
+
+# lombok 간단한 install
+    프로젝트의 dependency 폴더에서 lombok~.jar 우클릭
+    run as - java application으로 실행 - lombok install 창 뜸
+    이클립스에서 프로젝트 clean - 재시작
+

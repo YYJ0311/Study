@@ -79,3 +79,8 @@
         스케줄링 실행에 대한 history 보관 X
             => 스프링부트에서 history를 제공해주므로 보완 가능
         Fixed Delay 타입을 보장하지 않으므로 해당 타입을 사용하려면 추가 작업 필요
+
+# 사용
+    Quartz는 일반 클래스로 동작하기 때문에 Spring DI를 사용할 수 없다.
+        @Autowired를 사용해서 호출하여도 null로 출력됨
+        

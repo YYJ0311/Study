@@ -123,3 +123,31 @@
         job 설정 xml 내용 삭제
         jackson 최신버전 주입
         
+
+# Could not create connection to database server.
+    프로젝트에 사용한 mysql 버전이 낮아서 에러 발생
+    해결방법
+        pom.xml에 설정된 mysql 버전을 올려서 해결
+        <dependency>
+            <groupId>mysql</groupId> 
+            <artifactId>mysql-connector-java</artifactId> 
+            <version>8.0.23</version>
+        </dependency>
+
+# web.xml is missing and <failOnMissingWebXml> is set to true
+    갑자기 생김
+
+    해결방법
+        <build>아래에 failOnMissingWebXml 세팅 false로 추가
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.4</version>
+            <configuration>
+                <warSourceDirectory>src/main/webapp</warSourceDirectory>
+                <warName>sample</warName>
+
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+        </plugin>
