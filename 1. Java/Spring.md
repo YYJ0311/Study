@@ -182,3 +182,17 @@
     run as - java application으로 실행 - lombok install 창 뜸
     이클립스에서 프로젝트 clean - 재시작
 
+# JPA) @Commit과 @Transactional
+    @Transactional
+        JPA에서 update나 delete를 사용할 때 꼭 필요한 어노테이션
+        
+        해당 어노테이션을 붙여서 테스트(@Test가 붙은) 메소드가 종료될 때 메소드 내부에서 생성했던 데이터를 롤백시킬 수 있다.
+
+    @Commit
+        해당 어노테이션을 추가한 후 테스트를 실행하면 DB에서 변경했던 데이터들이 롤백되지 않고 그대로 남아있다.
+
+# @ToString
+    lombok 메소드 중 하나
+    toString()을 자동으로 생성해줌
+    이걸 사용 안 해서 결과물을 출력할 때 필요한 문자대신 @a1s2d3 같은 표현으로 출력되었다.
+    결과물의 타입으로 설정한 클래스에 @ToString을 붙여줌으로써 원하는 문자를 얻을 수 있었다!

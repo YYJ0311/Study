@@ -151,3 +151,21 @@
                 <failOnMissingWebXml>false</failOnMissingWebXml>
             </configuration>
         </plugin>
+
+# yaml) expected <block end>, but found BlockMappingStart
+    yaml 파일에서 에러 발생
+
+    해결방법
+        들여쓰기 확인, 재입력
+
+# jpa test) No matching tests found in any candidate test task.
+    @Test 어노테이션의 import를 잘못해서 인식을 못 함
+
+    해결방법
+        import org.junit.Test;
+        대신에
+        import org.junit.jupiter.api.Test;
+        로 사용한다.
+
+    그리고 test에선 print 찍어도 안 나온다.
+
