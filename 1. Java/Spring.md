@@ -177,11 +177,6 @@
     service에서 이어지는 mapper와 비슷한 개념인듯
     db 쿼리 결과를 받아서 service로 결과를 넘겨준다
 
-# lombok 간단한 install
-    프로젝트의 dependency 폴더에서 lombok~.jar 우클릭
-    run as - java application으로 실행 - lombok install 창 뜸
-    이클립스에서 프로젝트 clean - 재시작
-
 # JPA) @Commit과 @Transactional
     @Transactional
         JPA에서 update나 delete를 사용할 때 꼭 필요한 어노테이션
@@ -191,8 +186,119 @@
     @Commit
         해당 어노테이션을 추가한 후 테스트를 실행하면 DB에서 변경했던 데이터들이 롤백되지 않고 그대로 남아있다.
 
-# @ToString
-    lombok 메소드 중 하나
-    toString()을 자동으로 생성해줌
-    이걸 사용 안 해서 결과물을 출력할 때 필요한 문자대신 @a1s2d3 같은 표현으로 출력되었다.
-    결과물의 타입으로 설정한 클래스에 @ToString을 붙여줌으로써 원하는 문자를 얻을 수 있었다!
+# Lombok 어노테이션
+    @Getter/@Setter
+        aaa라는 필드에 선언하면 getAaa() ( boolean인 경우, isAaa() ) 와 setAaa() 메소드를 생성해준다.
+
+    @Constructor 시리즈
+        생성자를 자동으로 생성해준다.
+
+        public class User {
+            private Long id;
+            @NonNull
+            private String username;
+            @NonNull
+            private String password;
+            private int[] scores;
+        }
+        위 클래스에 대해서 다음의 어노테이션을 붙이면,
+            @NoArgsConstructor
+                파라미터가 없는 기본 생성자 생성
+                User user1 = new User();
+
+            @RequiredArgsConstructor
+                final이나 @NonNull인 필드 값만 파라미터로 받는 생성자를 생성
+                User user2 = new User("dale", "1234");
+
+            @AllArgsConstructor
+                모든 필드값을 파라미터로 받는 생성자를 생성
+                User user3 = new User(1L, "dale", "1234", null);
+
+    @ToString
+        toString()을 자동으로 생성해준다.
+        이걸 사용 안 해서 결과물을 출력할 때 필요한 문자대신 @a1s2d3 같은 표현으로 출력되었다.
+        결과물의 타입으로 설정한 클래스에 @ToString을 붙여줌으로써 원하는 문자를 얻을 수 있었다!
+        exclude를 사용해서 원하는 결과에서 제외시킬 수도 있다.
+
+        @ToString(exclude = "password")
+        public class User {
+        private Long id;
+        private String username;
+        private String password;
+        private int[] scores;
+        }
+
+        어노테이션을 붙인 위 클래스에 다음과 같이 setting
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("dale");
+        user.setUsername("1234");
+        user.setScores(new int[]{80, 70, 100});
+        
+        그리고 출력하면
+        System.out.println(user);
+        => User(id=1, username=1234, scores=[80, 70, 100])
+
+    @EqualsAndHashCode
+        equals와 hashCode 메소드를 자동으로 생성해준다
+        callSuper 속성을 통해서 부모 클래스의 필드까지 감안할지 안 할지에 대해 설정할 수 있다
+            callSuper = true로 설정하면 부모 클래스 필드 값들도 동일한지 체크하고, callSuper = false로 설정하면(기본값) 자신 클래스의 필드 값들만 고려한다.
+
+            public class User {
+            private Integer Id;
+            }
+
+            @EqualsAndHashCode(callSuper = true/false)
+            public class Member extends User{
+            private String name;
+            private String email;
+            }
+
+            위 클래스에 대해서 member1과 member2를 만들어서 equals()로 비교
+
+            Member member1 = new Member();
+            member1.setId(1);
+            member1.setName("A");
+            member1.setEmail("A@naver.com");
+
+            Member member2 = new Member();
+            member2.setId(2);
+            member2.setName("A");
+            member2.setEmail("A@naver.com");
+
+            member1.equals(member2);
+            => Member 클래스에 선언했던 어노테이션의 속성이 true이면, 
+                부모 클래스인 User의 필드 Id까지 확인하게 되므로 Id 값이 1과 2로 서로 달라서 false 반환됨
+            속성이 false 이면,
+                User의 필드를 제외한 Member의 필드만으로 비교하기 때문에 Name과 Email이 같아서 true 반환됨
+                
+    @Data
+        위 어노테이션들을 모두 설정해줌
+
+# @Qualifier
+    bean을 설정할 때 <context:annotation-config/> 를 사용함으로써 굳이 bean 태그 안에 <constructor-arg>나 <property>태그를 추가하지 않아도 스프링의 @Autowired 어노테이션이 적용된 생성자, 필드, 메소드에 대해 의존 자동 주입을 처리한다.
+
+    이 때 만약 동일한 타입을 가진 bean 객체가 두개가 있다면?
+        스프링이 어떤 빈을 주입해야 할 지 알 수 없어서 스프링 컨테이너를 초기화하는 과정에서 Exception을 발생시킨다.
+    
+    이런 문제를 해결하기 위해 @Qualifier 어노테이션을 이용하여 사용할 의존 객체를 선택할 수 있도록 할 수 있다.
+        설정에서 bean의 한정자 값을 설정. 아래에선 m1과 m2가 해당됨.
+            <context:annotation-config>
+                <bean id="member1" class="example.Member">
+                    <qualifier value="m1"/>
+                </bean>
+
+                <bean id="member2" class="example.Member"/>
+                    <qualifier value="m2"/>
+                </bean>
+            <context:annotation-config/>
+
+        @Autowired 어노테이션이 적용된 주입 대상에 @Qualifier 어노테이션과 한정자를 설정
+            pubic class MemberDao{  
+                @Autowired  @Qualifier("m1")
+                private Member member;       
+
+                public void setMember(Member member){      
+                    this.member = member;  
+                }
+            }

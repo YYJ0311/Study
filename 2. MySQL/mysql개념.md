@@ -145,6 +145,8 @@
             테이블 생성시 추가 설정을 한 경우 서버의 설정값을 그대로 받기 위해 테이블에서 설정을 하지 않도록 함
 
 # LEAD / LAG
+    둘다 여러 행을 되돌아보고 현재 행에서 해당 행의 데이터에 액세스 할 수 있는 윈도우 함수이다.
+
     LEAD
         문법
             LEAD(<expression>[,offset[, default_value]]) OVER (
@@ -166,9 +168,12 @@
                 LEAD(orderDate,1) OVER (
                     PARTITION BY customerNumber
                     ORDER BY orderDate ) nextOrderDate
-            FROM 
+            FROM
                 orders
             INNER JOIN customers USING (customerNumber);
+
+            => orderDate 컬럼에서 1개 이후의 값(다음 주문일)이 nextOrderDate에 정렬됨
+            이를 이용해서 고객(customerNumber)별 주문일과 그 다음 주문일을 나란히 출력하여 확인 할 수 있다.
 
         https://www.mysqltutorial.org/mysql-window-functions/mysql-lead-function/
 
@@ -183,7 +188,7 @@
                 totaldownloadNumber,
                 LAG(totaldownloadNumber) over (order by stats_datetime_start) as previousTotalNumber
             from mureung.data_monthly_stats
-            => 이렇게 쓰면 각 행의 totaldownloadNumber와 그 윗 행의 값이 previousTotalNumber 컬럼으로 조회됨
+            => 이렇게 쓰면 각 행의 totaldownloadNumber와 그 윗 행(이전 데이터)의 값이 previousTotalNumber 이름으로 조회할 수 있음
         
         https://www.mysqltutorial.org/mysql-window-functions/mysql-lag-function/
 
@@ -576,3 +581,18 @@
         Hash 인덱스를 기본으로 사용해 아주 빠름
         서버가 다운되면 데이터 사라지므로, 임시 테이블이나 고정 데이터용으로 적합
         데이터 전체를 파일로 보관했다가 DB가 재시작할 때 로드할 수 있게 하거나, 혹은 Master-Slave로 구성하여 Master가 재시작할 때 Slave의 데이터를 동기화 하는 방법이 있다.
+
+# WITH
+    WITH문으로 가상 테이블을 만들 수 있음
+    with문 이후에 오는 select문으로 조회할 수 있다
+
+    예시 
+        WITH TBL AS
+        (
+            SELECT 
+                '철수' AS NAME, 
+                20 AS AGE
+        )
+        SELECT NAME, AGE FROM TBL;
+        => 철수, 20
+
