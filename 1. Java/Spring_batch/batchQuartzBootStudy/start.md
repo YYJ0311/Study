@@ -88,7 +88,7 @@
         여기서 custom을 쓴 것은 이렇게도 가능하다를 보여주기 위함
     2. 읽을 파일 생성
         쓰기 전에 참고할 읽을 파일을 sample에 생성
-    3. Job(TextJob2) 생성 및 코드작성
+    3. job(TextJob2)
         읽기 했던 것에서 writer추가
         위에서 만든 lineAggregator를 통한 쓰기 값 가공
     
@@ -99,10 +99,39 @@
             1:일
             2:이
             ...
-    2. job(CsvJob1) 생성 및 작성
+    2. job(CsvJob1)
         reader, step, job을 작성하고 reader에서 구분자와 기타 설정을 추가함
 
         읽을 때 타입을 가져오는 클래스에 어노테이션을 주의한다!
 
 # csv 쓰기
-    
+    1. custom BeanWrapperFieldExtractor 생성
+        파일 쓰는 과정에서 수정될 부분은 processor를 사용하는게 올바른 방법이지만, custom도 가능하다는 의미에서 파일을 새로 만들어서 사용함
+        내장된 BeanWrapperFieldExtractor 클래스 코드를 CustomBeanWrapperFieldExtractor클래스에 복붙해서 씀
+    2. job(CsvJob2.java)
+        읽기에서 했던 것에 writer만 추가
+
+# fixedLength 읽기
+    고정된 길이만큼만 나눠서 읽을 수 있음
+# fixedLength 쓰기
+    데이터가 달라서 읽는 방법이 달라짐
+        컬럼을 칸 수로 범위지정해서 나눠서 읽는다.
+    writer와 포맷이 추가됨
+        %-5s###%5s 포맷
+            가운데 ###
+            왼쪽으로 5번째 칸에 컬럼 1개
+            오른쪽으로 5번째 칸에 컬럼 1개
+
+# json 읽기
+    json 데이터 준비
+        업비트 api로 종목 이름 json 가져옴
+    DTO 생성
+        데이터의 key값에 해당하는 데이터들에 대해 사용하기 편하도록 dto 클래스에서 lombok 어노테이션으로 지정함
+
+# json 쓰기
+    processor를 통한 데이터 가공 후 쓰기
+        원화시장만 가져오기
+            dto로 생성했던 메소드로 if 조건을 걸어서 해당되는 데이터들만 return함
+
+batch를 쓰는 여러가지의 경우
+    https://www.youtube.com/playlist?list=PLogzC_RPf25HRSG9aO7qKrwbT-EecUMMR
