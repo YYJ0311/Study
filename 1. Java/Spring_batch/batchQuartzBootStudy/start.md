@@ -1,6 +1,7 @@
 # 참고
     https://www.youtube.com/watch?v=wy99cPHlMlA
     https://jojoldu.tistory.com/328
+    https://oingdaddy.tistory.com/183
 
 # 파일 목적
     job과 step 간단한 사용 예시
@@ -132,6 +133,16 @@
     processor를 통한 데이터 가공 후 쓰기
         원화시장만 가져오기
             dto로 생성했던 메소드로 if 조건을 걸어서 해당되는 데이터들만 return함
+
+# 단일 csv 파일을 DB에 batch(CsvToJob1)
+    이전에 한 것들과 같음
+
+# 멀티 txt 파일을 DB에 batch(CsvToJob2)
+    read할 때 이전까진 DefaultLineMapper로 한 라인씩 읽었는데, 이번엔 MultiResourceItemReader와 resourceLoader를 이용하여 코드로 간결하게 읽어옴 (여전히 FlatFileItemReader는 사용함)
+
+    : 와 #로 혼용하여 구분해서 일부러 에러 발생시킴. 그리고 에러 처리함(에러항목에 대해 스킵)
+        => step에서 faultTolerant() 메소드 사용
+
 
 batch를 쓰는 여러가지의 경우
     https://www.youtube.com/playlist?list=PLogzC_RPf25HRSG9aO7qKrwbT-EecUMMR
