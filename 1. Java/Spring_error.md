@@ -169,3 +169,11 @@
 
     그리고 test에선 print 찍어도 안 나온다.
 
+# proeprties 파일 한글 깨짐
+    방법1. 인코딩 타입 변경
+        Window - Preferences - General > Content Types > Text 와 Text > Java Properties File을 한번씩 클릭하고 각각 Default enxoding을 UTF-8로 Update & Apply and Close
+
+    방법2. 플러그인 설치
+        Help - Install New Software - Add - Location에 다음 주소 입력하고 Add
+        http://propedit.sourceforge.jp/eclipse/updates/
+        파일 로딩이 끝나면 가장 아래에 ProeprtiesEditor 체크하고 설치

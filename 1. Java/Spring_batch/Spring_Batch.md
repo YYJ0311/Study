@@ -194,3 +194,5 @@
     BATCH_JOB_EXECUTION_PARAMS
         테이블의 파라미터 값을 담고 있는 테이블
 
+# Skip / Retry
+    https://oingdaddy.tistory.com/183
