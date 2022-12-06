@@ -302,3 +302,11 @@
                     this.member = member;  
                 }
             }
+
+# 프로젝트 JDK 버전 변경
+    방법 1) 상단 Window - Preferences - Java > Installed JREs - Add - Standard VM - 추가할 JDK 경로 설정후 finish
+
+    방법 2) 프로젝트 우클릭 - properties - java build path - add library - execution environment에서 버전을 변경
+
+# project faucet
+    개발환경에 맞춤 세팅, 자동 완성, 빈 지원(XML, config 등)의 도우미 역할을 하는 기능

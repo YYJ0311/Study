@@ -195,4 +195,61 @@
         테이블의 파라미터 값을 담고 있는 테이블
 
 # Skip / Retry
-    https://oingdaddy.tistory.com/183
+    둘 다 Spring Batch에서 기본으로 제공하는 기능으로, 배치 작업에 대해 skip하고 retry할 수 있다.
+    둘 다 Step 단계에서 정의할 수 있으며, faultTolerant() 메소드 사용이 선행되어야 한다.
+
+    Skip 예시
+        @Bean
+        public Step sampleSkipretryStep(SampleStepListener stepListener, JdbcBatchItemWriter<Employee> writer) {
+            return stepBuilderFactory.get("sampleSkipretryStep")
+                .listener(stepListener)
+                .<Employee, Employee> chunk(10)
+                .reader(reader())
+                .processor(processor())
+                .writer(writer)
+                .faultTolerant()
+                .skipLimit(2)
+                .skip(FileNotFoundException.class)
+                .skip(SQLException.class)
+                .noSkip(MalformedInputException.class)
+        //      .skipPolicy(new UserSkipPolicy())
+                .build();
+        }
+        => 사용 메소드
+            skipLimit()
+                skip 할 수 있는 횟수
+            skip()
+                괄호 안의 exception이 발생했을때 skip
+            noSkip()
+                괄호 안의 exception이 발생하면 skip을 하지 않고 오류 발생시킴
+            skipPolicy()
+                사용자 정의로 skip에 대한 policy를 만들어서 적용
+
+    Retry 예시
+        Skip 예시와 같고, 다음과 같이 skip을 사용하는 부분만 retry로 바꿔서 사용함
+                .retryLimit(1)
+                .retry(SQLException.class)
+                .noRetry(MalformedInputException.class)
+        //      .retryPolicy(new UserRetryPolicy())
+        => 사용 메소드
+            retryLimit()
+                재시도 할 횟수
+            retry()
+                괄호 안의 exception이 발생했을 때 retry
+            noRetry()
+                괄호 안의 exception이 발생했을때 retry를 하지 않음
+            retryPolicy()
+                사용자 정의로 retry에 대한 policy를 만들어서 적용
+        Retry의 사용 의미
+            ConnectTimeoutException이나 DeadlockLoserDataAccessException 와 같이 재시도를 해봄직한 Exception인 경우에만 retry를 하는 의미가 있다. 그 외의 다 른 exception은 계속 retry한다고 해서 결과가 바뀌진 않을 것이기 때문.
+
+    출처 : https://oingdaddy.tistory.com/183
+
+# 알맞은 Chunk Size
+    만약 1억만건의 파일을 DB에 저장하는 배치를 구현해야 하는 경우 chunk size는?
+        1) chunk size를 작게해서 안전하게 작은 데이터에 대해 배치를 돌림
+            => commit은 resource(시간, 비용)이 매우 많이 소모됨. 따라서 commit을 적게해야하므로 개개의 데이터에 대한 배치를 돌리는 것은 부적절하다.
+
+        "시스템 구성과 batch 특성에 따라 알맞은 chunk size를 구성해야 함"
+        금융권은 2000 - 3000 건 정도 기준으로 배치를 돌렸음
+

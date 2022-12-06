@@ -133,7 +133,9 @@
     processor를 통한 데이터 가공 후 쓰기
         원화시장만 가져오기
             dto로 생성했던 메소드로 if 조건을 걸어서 해당되는 데이터들만 return함
-
+---
+---
+---
 # 단일 csv 파일을 DB에 batch(CsvToJob1)
     이전에 한 것들과 같음
 
@@ -146,3 +148,19 @@
 
 batch를 쓰는 여러가지의 경우
     https://www.youtube.com/playlist?list=PLogzC_RPf25HRSG9aO7qKrwbT-EecUMMR
+
+---
+---
+---
+# JobScope에서 jobParameters를 가져오는 원리
+    TaskletJob 샘플에 JobScope 어노테이션을 써서 입력했던 jobParameters를 가져올 수 있었다.
+
+    1. Spring은 기본적으로 싱글톤으로 Bean을 생성함.
+    2. appication이 구동되자마자 bean이 생성됨.
+    3. batch가 기동되기도 전에 bean이 생성되고, 이 때는 batch parameter를 가져올 수 없다.
+    4. 그래서 JobScope나 StepScope 어노테이션을 사용함으로써 수행될 때 bean을 생성하고 batch parameter를 가져올 수 있다.
+
+# batch parameter 사용
+    job 생성(MultiJob1)
+    classPath sample에 inFile 생성(multiJob1.txt)
+        resources > sample 경로

@@ -159,7 +159,7 @@
         들여쓰기 확인, 재입력
 
 # jpa test) No matching tests found in any candidate test task.
-    @Test 어노테이션의 import를 잘못해서 인식을 못 함
+    @Test 어노테이션의 import를 잘못 설정해서 인식을 못 함
 
     해결방법
         import org.junit.Test;
@@ -177,3 +177,11 @@
         Help - Install New Software - Add - Location에 다음 주소 입력하고 Add
         http://propedit.sourceforge.jp/eclipse/updates/
         파일 로딩이 끝나면 가장 아래에 ProeprtiesEditor 체크하고 설치
+
+# failed to parse the connection string near ';serverTimezone=UTC'.
+    root-context에서 적었던 db 설정을 파일로 따로 분리한 뒤 생긴 오류
+    해결방법
+        기존의 db 주소에 포함되어 있던 ";"를 제거함
+        (기존) jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;
+        =>
+        (수정) jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
