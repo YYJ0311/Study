@@ -1,0 +1,14 @@
+spring:
+  batch:
+    job: 
+      names: ${job.name:NONE}
+  db1:
+    datasource:
+      jdbc-url: jdbc:mysql://localhost:3306/multiDatabase?serverTimezone=Asia/Seoul
+      username: 
+      password: 
+  db2:
+    datasource:
+      jdbc-url: jdbc:mysql://localhost:3306/multiDatabase2?serverTimezone=Asia/Seoul
+      username: 
+      password:     
