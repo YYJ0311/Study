@@ -253,3 +253,20 @@
         "시스템 구성과 batch 특성에 따라 알맞은 chunk size를 구성해야 함"
         금융권은 2000 - 3000 건 정도 기준으로 배치를 돌렸음
 
+# chunk size별 처리 시간
+    비교 방법
+        dept -> dept2로 10000 row의 데이터를 변환하여 저장하는 batch에 대해 chunkSize를 다르게 하여 실행함
+        매 batch는 dept2가 비워진 상태에서 수행하여 얻어진 시간으로 비교함
+            (dept2 내용만 지우기 : delete from parallelbatch.dept2;)
+    
+        처리 시간은 batch_job_execution 테이블에 저장된 start time, end time을 비교하여 알 수 있다.
+
+    실행
+        1. chunkSize 가 10일 때, 41~52초 : 11초 소요
+        2. chunkSize 가 100일 때, 04~10초 : 6초 소요
+        3. chunkSize 가 1000일 때, 00~04초 : 4초 소요
+        4. chunkSize 가 10000일 때, 10~16초 : 6초 소요
+    
+    결과
+        최적의 chunkSize는 1000이다.
+        chunkSize가 10000일 땐 오히려 느려졌다.
