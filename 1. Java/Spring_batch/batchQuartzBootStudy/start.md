@@ -152,7 +152,7 @@ batch를 쓰는 여러가지의 경우
 ---
 ---
 ---
-# JobScope에서 jobParameters를 가져오는 원리
+# JobScope로 jobParameters를 가져오는 원리
     TaskletJob 샘플에 JobScope 어노테이션을 써서 입력했던 jobParameters를 가져올 수 있었다.
 
     1. Spring은 기본적으로 싱글톤으로 Bean을 생성함.
@@ -160,7 +160,7 @@ batch를 쓰는 여러가지의 경우
     3. batch가 기동되기도 전에 bean이 생성되고, 이 때는 batch parameter를 가져올 수 없다.
     4. 그래서 JobScope나 StepScope 어노테이션을 사용함으로써 수행될 때 bean을 생성하고 batch parameter를 가져올 수 있다.
 
-# batch parameter 사용
+# batch parameter를 가져와서 job에 사용
     job 생성(MultiJob1)
     classPath sample에 inFile 생성(multiJob1.txt)
         resources > sample 경로
