@@ -329,3 +329,37 @@
     장점
         - SQL을 직접 사용하지 않고 메소드 호출만으로 쿼리가 수행되기 때문에 SQL 반복 작업을 하지 않아서 생산성이 높음
         - 테이블 컬럼이 변경되었을 때 테이블과 관련된 DAO 파라미터, 결과, SQL등을 대신 수행해줌으로써 유지보수가 수월
+
+# @PostConstruct / @PreDestroy
+    자바 버전 9 이후부터 dependency 추가 필요
+
+    @PostConstruct
+        의존성 주입이 이루어진 후 초기화를 수행하는 메소드
+        해당 어노테이션이 붙은 메소드는 클래스가 service를 수행하기 전에 발생하며, 다른 리소스에서 호출되지 않는다 해도 수행된다.
+
+        장점
+            - 해당 어노테이션을 사용함으로써 Bean이 초기화 됨과 동시에 의존성을 확인할 수 있다.
+                (클래스 내에 @Autowired를 붙여서 객체를 사용할 때, 생성자가 필요한 경우 해당 어노테이션을 사용하면 편하다.)
+            - bean이 여러번 초기화되는 것을 방지하여 bean lifecycle에서 오직 한 번만 수행됨을 보장할 수 있다. 
+                (WAS가 올라가면서 bean이 생성된 다음 딱 한 번만 초기화 함)
+                => 기본 사용자나 한 번만 등록하면 되는 key 값 등을 등록하는데 사용함
+
+        @Component
+        public class DbInit {
+
+            @Autowired
+            private UserRepository userRepository; // 초기화
+
+            @PostConstruct
+            private void init() {
+                // 초기화 처리
+                User admin = new User("admin", "admin password");
+                User normalUser = new User("user", "user password");
+                userRepository.save(admin, normalUser);
+            }
+        }
+        => 이렇게 사용하면 init() 을 한 번만 실행하게 되나보다.
+
+    @PreDestroy
+        Spring이 애플리케이션 컨텍스트에서 Bean을 제거하기 직전에 단 한 번만 실행됨
+
