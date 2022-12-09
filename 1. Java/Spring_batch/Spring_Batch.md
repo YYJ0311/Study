@@ -36,7 +36,7 @@
     - 신뢰성 : 무엇이 잘못되었는지를 추적할 수 있어야 한다. (로깅, 알림)
     - 성능 : 지정한 시간 안에 처리를 완료하거나 동시에 실행되는 다른 애플리케이션을 방해하지 않도록 수행되어야 함.
 
-# Batch와 Quartz / Scheduler
+# Batch와 Quartz
     Spring Batch는 Scheduler가 아니기에 비교 대상이 아니다. 
     Quartz는 스케줄러의 역할, Batch는 대용량 데이터 배치 처리기능을 한다. 
     Quartz + Batch로 조합해서 많이 사용한다.
@@ -157,6 +157,37 @@
         JobExecutionContext은 Commit 시점에 저장되고, StepExecutionContext은 실행 사이에 저장된다.
 
         ExecutionContext를 통해 Step간 Data 공유가 가능하며, Job 실패시 ExecutionContext를 통한 마지막 실행 값을 재구성 할 수 있다.
+
+    JobLocator
+        JobRegistry의 부모 인터페이스
+        작업 injection을 위한 것이 아닌, 실행할 인스턴스를 찾는 역할.
+        동적으로 job을 실행하는 경우 사용
+
+        동작할 job이 미리 결정된 경우에는 job 인스턴스와 클래스를 연결하는 게 낫지만, 동작할 작업이 미리 결정되지 않은 경우에는 JobLocator를 사용하는 것이 낫다.
+        즉, 어디에 쓰일지 모르는 job에 대해서 jobLocator를 사용하는 것이 좋다는 의미인 것 같다.
+
+    JobDetail / Trigger
+        jobDetail : Job의 실제 구현내용과 Job 실행에 필요한 상세 정보
+        trigger : job을 언제 어떤 주기로 실행할지에 대한 정보
+
+    Batch 처리에 도움을 주는 객체
+        JobRegistry
+            생성된 job을 자동으로 등록, 추적 및 관리함
+            여러 곳에서 job을 생성한 경우 스프링 컨테이너에서 job을 수집해서 사용할 수 있다.
+            기본 구현체는 MapJobRegistry이고 Map 기반으로, JobName을 key로 가진다.
+            Job 등록은 스프링 컨테이너가 시작할 때, JobRegistryBeanPostProcessor에 의해서 자동으로 JobRegistry에 Job을 등록시킨다. 따라서 JobRegistryBeanPostProcessor을 스프링 Bean으로 등록이 필요하다.
+            내부적으로 Job Factory를 가지고 있고, Job이 필요할 때 꺼내와서 Job을 생성함
+
+            정의 필수 항목은 아님
+
+        JobExplorer
+            JobRepository의 읽기전용 모드
+            실행 중인 Job의 실행 정보인 JobExecution, StepExecution을 조회할 수 있고, 그렇게 조회한 걸로 Stop시킬 수 있다.
+
+        JobOperator
+            JobExplorer, JobRepository, JobRegistry, JobLauncher를 모두 가지고 있는 객체로 주로 쓰인다.
+            Batch Job의 중단, 재시작, Job 요약 등의 모니터링이 가능하다
+            기본 구현체로 SimpleJobOperator가 제공됨
 
 # MySQL 연동과 Meta Table
     Spring Batch는 비즈니스 로직만 작성해서 정상적으로 실행되지 않는다! 

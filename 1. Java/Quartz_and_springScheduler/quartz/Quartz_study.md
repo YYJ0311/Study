@@ -29,9 +29,15 @@
         interval, delay, repeat times 등을 설정할 수 있다
         Job 을 특정 시간에 실행되게 하거나 특정 기간에 반복 수행하도록 할 시에 사용됨
 
+        예시
+		SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1")
+			.startNow()
+			.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(5).repeatForever())
+			.build(); // withIntervalInSeconds을 이용해서 5초마다 수행됨
+
     CronTrigger
         공백으로 구분되는 6~7 자리의 문자(cron 표현)로 수행시간이 설정됨
-            
+
 # System.currentTimeMillis()
     1970-1-1 부터 경과한 시간을 long 타입, ms(1/1000초) 단위로 리턴
 
@@ -84,3 +90,12 @@
     Quartz는 일반 클래스로 동작하기 때문에 Spring DI를 사용할 수 없다.
         @Autowired를 사용해서 호출하여도 null로 출력됨
         
+# JobStore 2가지 (JDBCJobStore, RAMJobStore)
+    JDBCJobStore
+        서버를 다시 시작해도 작업이 DB에 있으므로 유지됨
+        
+    RAMJobStore
+        매우 빠른 작업속도
+        서버를 다시 시작하면 작업이 유지되지 않음
+        
+        RAMJobStore를 사용하는 경우는 간단한 작업이므로, 굳이 quartz를 사용하지 않고도 Spring이나 EJB에서 지원하는 스케줄러로 구현 가능할 것임

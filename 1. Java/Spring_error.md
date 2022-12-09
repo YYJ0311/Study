@@ -185,3 +185,18 @@
         (기존) jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;
         =>
         (수정) jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+
+# incompatible jvm. version XX or greater is required
+    jdk 버전이 높은 프로젝트를 import한 이후 낮은 버전을 사용하는 jdk를 실행할 때 발생한 에러
+
+    해결방법
+        1. 에러가 뜬 IDE(eclipse 또는 sts) 폴더 내 ~.ini 파일에서 Dosgi.requiredJavaVersion 을 찾아서 필요한 버전 입력한다.
+        2. IDE를 실행시켜주는 가상머신(javaw.exe)을 ini 파일에 추가
+            : IDE를 실행 할 java의 경로를 지정해주는 것
+            (javaw는 jdk 폴더 내 bin 폴더에 위치함)
+        ex)
+            -vm
+            C:\Program Files\Java\jre1.8.0_202\bin\javaw.exe
+        
+    이렇게 해도 해결되지 않을 경우, ini파일에 입력한 jdk 버전과 그 javaw 경로를 바꿈
+

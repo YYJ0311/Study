@@ -41,7 +41,7 @@
 
         파라미터를 바꾸며 batch를 실행할 수 있다.
 
-# db 튜플 읽기
+# db 튜플 읽기(JpaPageJob1)
     1. db에 대한 domain 정의
         domain 폴더 생성 후 그 아래에
             Dept 테이블에 대한 정보 클래스 생성,
@@ -93,7 +93,7 @@
         읽기 했던 것에서 writer추가
         위에서 만든 lineAggregator를 통한 쓰기 값 가공
     
-# csv 읽기
+# csv 읽기(CsvJob1)
     1. 읽을 csv 파일 생성
         구분자도 새로 지정해줄 것이므로 csv 기본 구분자인 "," 대신 ":" 로 구분해서 작성한다
             one:two
@@ -105,11 +105,11 @@
 
         읽을 때 타입을 가져오는 클래스에 어노테이션을 주의한다!
 
-# csv 쓰기
+# csv 쓰기(CsvJob2)
     1. custom BeanWrapperFieldExtractor 생성
         파일 쓰는 과정에서 수정될 부분은 processor를 사용하는게 올바른 방법이지만, custom도 가능하다는 의미에서 파일을 새로 만들어서 사용함
         내장된 BeanWrapperFieldExtractor 클래스 코드를 CustomBeanWrapperFieldExtractor클래스에 복붙해서 씀
-    2. job(CsvJob2.java)
+    2. job(CsvJob2)
         읽기에서 했던 것에 writer만 추가
 
 # fixedLength 읽기
