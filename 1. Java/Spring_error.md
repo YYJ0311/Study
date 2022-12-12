@@ -71,7 +71,7 @@
     특정 파일의 컴파일 버전이 설치된 자바 버전보다 높아서 생기는 오류
 
     해결방법
-        일반적으로는 프로젝트 jdk 버전을 올려서 해결함
+        1. 일반적으로는 프로젝트 jdk 버전을 올려서 해결함
         근데 내가 겪은 건 dependency 추가 후 생긴 에러여서 찾아본 결과, spring-context-support의 버전을 낮추니 오류가 없어졌다.
         <dependency>
 		    <groupId>org.springframework</groupId>
@@ -80,6 +80,8 @@
 		</dependency>
         버전 6.0.0에서 생긴 오류가 5.2.9.RELEASE 에선 사라짐
         jdk 8버전이 spring-context-support 6버전과 호환 불가해서 생긴 오류였다.
+
+        2. 특정 dependency에서 지원하는 jdk 최소버전이 설치된 jdk보다 높아서 에러가 생길 수 있다. 이 땐, dependency 버전을 낮추거나 dependency를 지우면 해결된다.
         
 # Error creating bean with name XXX defined in ServletContext resource [/WEB-INF/spring/root-context.xml]
     경로가 root-context라고 나와서 거기만 찾아봤는데, 문제는 거기가 아니라 servlet-context.xml(dispatcher-servlet.xml)이었다.
