@@ -202,3 +202,28 @@
         
     이렇게 해도 해결되지 않을 경우, ini파일에 입력한 jdk 버전과 그 javaw 경로를 바꿈
 
+# java.lang.OutOfMemoryError: Java heap space
+    OOME
+    데이터를 받아와서 리스트에 넣는 과정에서 발생
+
+    해결방법
+        클래스(또는 프로젝트) 우클릭 - run as - run configurations - arguments - VM arguments에서 메모리 할당
+
+        메모리는 사용하는 컴퓨터 여건에 따라 조정함
+        -XX:MaxPermSize=1012m -Xms516m -Xmx1012m
+
+            Xms - [최소 메모리]
+            Xmx - [최대 메모리]
+            XX:PermSize - [최소 Perm 메모리]
+            XX:MaxPermSize - [최대 Perm 메모리]
+
+# 한글 깨짐
+    프로젝트 환경이 UTF-8이어도 깨짐
+    InputStreamReader와 BufferedReader로 읽는데 깨져서 나옴
+    
+    br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
+    
+    해결방법
+        MS949 사용
+        br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "MS949"));
+
