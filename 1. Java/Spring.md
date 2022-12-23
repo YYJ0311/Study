@@ -321,9 +321,9 @@
         엔티티와 매핑할 테이블 지정
         클래스 이름과 테이블 이름이 다를 경우 JPA에게 테이블의 이름을 알려주는 역할
 
-# JPA) hibernate
-    JPA의 구현체로, JPA 인터페이스를 구현하고 내부적으로 JDBC API를 사용하는 자바 언어를 위한 ORM 프레임워크
-
+# 하이버네이트 (Hibernate)
+    하이버네이트 ORM은 자바 언어를 위한 객체 관계 매핑 프레임워크로, 객체 지향 도메인 모델을 관계형 데이터 베이스로 매핑하기 위한 프레임워크를 제공한다. 
+    JPA의 구현체 중 하나로, JPA 인터페이스를 구현하고 내부적으로 JDBC API를 사용하는 자바 언어를 위한 ORM 프레임워크이다.
     MyBatis와 같은 역할
 
     장점
@@ -363,3 +363,45 @@
     @PreDestroy
         Spring이 애플리케이션 컨텍스트에서 Bean을 제거하기 직전에 단 한 번만 실행됨
 
+# 설정 파일(properties, yaml)에서 값 가져오는 방법
+    https://velog.io/@haerong22/Springboot-%EC%84%A4%EC%A0%95-%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C-%EA%B0%92-%EA%B0%80%EC%A0%B8%EC%98%A4%EB%8A%94-%EB%B0%A9%EB%B2%95
+    https://www.baeldung.com/spring-yaml-propertysource
+
+    스프링의 설정 정보들은 application.properties(또는 .yml) 파일에서 관리한다.
+    커넥션 정보나 인증 정보 등을 숨기거나 동적으로 변경하기 위하여 설정파일에 넣어 사용할 수 있다.
+
+    yaml 파일의 경우 다음과 같이 설정함
+        test:
+          password: 1234
+
+    1. Environment 인터페이스 사용
+
+    2. @Value 사용
+        해당 어노테이션을 사용하면 스프링이 값을 넣어준다.
+        타입 지정 가능
+        @Value("${test.password}")
+        private int password;
+
+        @Override
+        public void onApplicationEvent(ApplicationStartedEvent event) {
+            System.out.println("password = " + password);
+        }
+
+        주의 ) yaml 파일의 경우 PropertySourceFactory를 커스텀해줘야 사용할 수 있다.
+            PropertySourceFactory 를 상속받고 오버라이딩 후 내부 코드 구현
+
+            public class YamlPropertySourceFactory implements PropertySourceFactory {
+                @Override
+                public PropertySource<?> createPropertySource(@Nullable String name, EncodedResource resource) throws IOException {
+                    YamlPropertiesFactoryBean factory = new YamlPropertiesFactoryBean();
+                    factory.setResources(resource.getResource());
+                    Properties properties = factory.getObject();
+                    return new PropertiesPropertySource(resource.getResource().getFilename(), properties);
+                }
+            }
+
+            사용할 클래스에 @PropertySource로 yml파일과 커스텀 PropertySourceFactory를 받아서 사용한다.
+            @PropertySource(value = {"test.yml"}, factory = YamlPropertySourceFactory.class)
+            public class PropertiesApplication { ... }
+
+    3. 커스텀 객체 활용(ConfigurationProperties)
