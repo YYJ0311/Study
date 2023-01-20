@@ -227,3 +227,8 @@
         MS949 사용
         br = new BufferedReader(new InputStreamReader(new FileInputStream(path), "MS949"));
 
+# Description Resource Path Location Type The superclass "javax.servlet.http.HttpServlet", determined from the Dynamic Web Module facet version (2.5), was not found on the Java Build Path
+    톰캣 버전 때문에 생긴 에러
+
+    해결방법
+        프로젝트 우클릭 > Properties > Project Facets > Dynamic Web Module > Runtime 에서 톰캣 설정 후 apply
