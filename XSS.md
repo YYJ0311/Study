@@ -1,6 +1,7 @@
 # XSS (cross Site Scripting)
-    게시판이나 웹 메일 등에 자바스크립트 같은 스크립트 코드를 삽입해서 개발자가 고려하지 않은 기능이 작동하게 하는 치명적일 수 있는 공격이다.
+    웹 해킹 공격 기법 중 하나로, 게시판이나 웹 메일 등에 자바스크립트 같은 스크립트 코드를 삽입해서 개발자가 고려하지 않은 기능이 작동하게 하는 치명적일 수 있는 공격.
     대부분의 웹 해킹 공격기법과는 다르게 사용 서버가 아니라 사용자를 대상으로 함.
+    이미 CSS(Cascading Style Sheet)가 있어서 XSS라고 불림. Code Injection Attack 라고도 함.
     
     종류
         Reflected XSS, Stored XSS, DOM Based XSS

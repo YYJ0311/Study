@@ -301,3 +301,26 @@
     결과
         최적의 chunkSize는 1000이다.
         chunkSize가 10000일 땐 오히려 느려졌다.
+
+# meta table 삭제 순서
+    db에 자동으로 생긴 batch meta table에 테스트를 하며 쌓인 로그를 제거하려고 한다.
+    근데 테이블 컬럼들이 관계를 갖고 있어서 그냥 지워지지 않기 때문에 순서에 따라 데이터를 삭제해야 한다.
+
+    배치 프로젝트는 가동 중인 상태,
+    목표는 batch_job_execution 테이블의 job 실행기록들을 지우는 것
+
+    순서
+    (*** 테이블은 프로젝트가 재시작될 때 생성되므로, 프로젝트가 실행중인 상태에서 데이터를 초기화시키고 싶으면 데이터만 지워야 한다. 만약 테이블 째로 삭제하면 프로젝트 재시작해서 테이블 새로 만들어줘야 함.)
+    1. batch_job_execution_params / batch_job_execution_context 데이터 삭제
+    2. batch_step_execution_context / batch_step_execution_seq 데이터 삭제
+    3. batch_step_execution / batch_job_execution 데이터 삭제
+    6. 나머지 job 테이블 데이터 삭제
+    7. PK를 auto increment 시키기 위해 초기값을 insert 해야 한므로 다음 쿼리 실행
+        INSERT INTO BATCH_STEP_EXECUTION_SEQ (ID, UNIQUE_KEY) select * from (select 0 as ID, '0' as UNIQUE_KEY) as tmp where not exists(select * from BATCH_STEP_EXECUTION_SEQ);
+
+        INSERT INTO BATCH_JOB_EXECUTION_SEQ (ID, UNIQUE_KEY) select * from (select 0 as ID, '0' as UNIQUE_KEY) as tmp where not exists(select * from BATCH_JOB_EXECUTION_SEQ);
+
+        INSERT INTO BATCH_JOB_SEQ (ID, UNIQUE_KEY) select * from (select 0 as ID, '0' as UNIQUE_KEY) as tmp where not exists(select * from BATCH_JOB_SEQ);
+        
+    이렇게 하면 프로젝트 실행 중에 오류 없이 배치 테이블 초기화가 가능하다.
+    만약 프로젝트를 재실행할 수 있다면 위 순서에 따라 batch 관련 테이블을 전부 삭제해도 됨
